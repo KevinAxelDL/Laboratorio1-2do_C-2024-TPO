@@ -1,0 +1,3 @@
+No se esta usando la version dada por la catedra de H2, se utiliza una version mas reciente.
+Se mantiene de todas formas el archivo con los viejos por si es necesario.
+

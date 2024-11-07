@@ -4,16 +4,18 @@
  */
 package Turnera_medica;
 
+import Turnera_medica.BD.DBManager;
+import Turnera_medica.Utiles.TableManager;
+
 /**
  *
  * @author KevinDL
  */
-import java.sql.*;
+
 public class Main {
-    public static void main(String[] a)throws Exception {
-        Connection conn = DriverManager.
-            getConnection("jdbc:h2:~/test", "sa", "");
-        // add application code here
-        conn.close();
+    public static void main(String[] args) {
+        TableManager tm = new TableManager();
+        tm.createUserTable();
+        tm.dropUserTable();
     }
 }
