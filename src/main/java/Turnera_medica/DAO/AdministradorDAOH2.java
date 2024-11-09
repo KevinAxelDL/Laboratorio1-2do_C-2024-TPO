@@ -6,9 +6,6 @@ package Turnera_medica.DAO;
 
 import Turnera_medica.DAO.Interfaces.AdministradorDAO;
 import Turnera_medica.Modelo.Administrador;
-import Turnera_medica.Modelo.Medico;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 /**
  *
@@ -19,7 +16,9 @@ public class AdministradorDAOH2 implements AdministradorDAO{
 
     @Override
     public void registrarAdministrador(Administrador nuevoAdmin) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String consultaSQLAux1 = "SELECT ID FROM FUNCION WHERE NOMBRE = 'ADMINISTRADOR'";
+        String consultaSQL1 = "INSERT INTO USUARIO (NOMBRE_USUARIO, CLAVE_USUARIO) VALUES ("+ nuevoAdmin.getNombreUsuario() +","+ nuevoAdmin.getClaveUsuario() +")";
+        String consultaSQL2 = "INSERT INTO USUARIO_POR_FUNCION (NOMBRE_USUARIO, ID_FUNCION) VALUES ("+ nuevoAdmin.getNombreUsuario() +", ("+ consultaSQLAux1 +") )";
     }
 
     @Override

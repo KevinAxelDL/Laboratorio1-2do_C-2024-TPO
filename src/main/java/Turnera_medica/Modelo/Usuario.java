@@ -9,11 +9,12 @@ package Turnera_medica.Modelo;
  * @author KevinDL
  */
 public abstract class Usuario {
-    private int dni;
-    private String nombre;
-    private String apellido;
-    private String nombreUsuario;
-    private String claveUsuario;
+    //Para que las subclases puedan acceder a sus atributos la visibilidad se definira como "protected"
+    protected int dni;
+    protected String nombre;
+    protected String apellido;
+    protected String nombreUsuario;
+    protected String claveUsuario;
     
     public static void ingresarAlSistema(String nUsuario, String cUsuario){
         // Metodo de clase

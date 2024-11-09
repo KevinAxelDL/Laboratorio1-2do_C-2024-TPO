@@ -16,12 +16,14 @@ import java.time.LocalTime;
 public interface AdministradorDAO extends UsuarioDAO{
     // IMPORTENTE: como minimo debe crearse manualmente un Administrador en la BD (root)
     
-    //Dar de alta
+    // Dar de alta registro
     public void registrarAdministrador(Administrador nuevoAdmin);
     
-    //Dar de baja
+    // Dar de baja registro
     public void eliminarAdministrador(String nUsuario, String uClave);
-
+    
+    // Modificar registro
+    
     //Reportes
     //public String pedirReporteGanancias(Medico m, LocalDate d, LocalTime t);
     //public String pedirReporteGanancias(LocalDate d, LocalTime t);
