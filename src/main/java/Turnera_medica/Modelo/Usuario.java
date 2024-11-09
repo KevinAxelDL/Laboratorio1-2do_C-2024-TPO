@@ -8,6 +8,30 @@ package Turnera_medica.Modelo;
  *
  * @author KevinDL
  */
-public class Usuario {
+public abstract class Usuario {
+    private int dni;
+    private String nombre;
+    private String apellido;
+    private String nombreUsuario;
+    private String claveUsuario;
+    
+    public static void ingresarAlSistema(String nUsuario, String cUsuario){
+        // Metodo de clase
+        // Loggeo en base a credenciales
+    }
+    
+    public Usuario(int dni, String nombre, String apellido, String nombreUsuario, String claveUsuario){
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.nombreUsuario = nombreUsuario;
+        this.claveUsuario = claveUsuario;
+    }
+    
+    public Usuario(String nombreUsuario, String claveUsuario){
+        this.nombreUsuario = nombreUsuario;
+        this.claveUsuario = claveUsuario;
+    }
+    
     
 }

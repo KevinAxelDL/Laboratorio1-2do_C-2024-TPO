@@ -8,6 +8,6 @@ package Turnera_medica.Modelo;
  *
  * @author KevinDL
  */
-public class Paciente {
+public class Paciente extends Usuario{
     
 }
