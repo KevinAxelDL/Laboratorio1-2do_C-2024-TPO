@@ -16,11 +16,10 @@ public class Administrador extends Usuario{
         super(nUsuario, uClave);
     }
     
-    public void registrarAdministrador(String nUsuario, String uClave){
-        Administrador nuevoAdmin = new Administrador(nUsuario, uClave); //Nueva instancia
-        AdministradorServicios.registrarAdministrador(nuevoAdmin);
+    public Administrador(int dni, String nombre, String apellido, String nombreUsuario, String claveUsuario){
+        super( dni,  nombre,  apellido,  nombreUsuario,  claveUsuario);
     }
-
+    
     public String getNombreUsuario() {
         return super.nombreUsuario;
     }

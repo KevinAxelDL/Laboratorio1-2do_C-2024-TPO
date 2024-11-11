@@ -4,13 +4,15 @@
  */
 package Turnera_medica.DAO.Interfaces;
 
+import Turnera_medica.Excepciones.DAOException;
+import Turnera_medica.Modelo.Usuario;
+
 /**
  *
  * @author KevinDL
  */
 public interface UsuarioDAO {
-    /* 
-     * Un 'Usuario' no existe como tal en el sistema y de momento las subinterfaces
-     * no comparten comportamiento, por ende esta seccion esta vacia.
-    */
+    
+    // Ingreso
+    public Usuario ingresarComoUsuario(String nombreUsuarioIn, String claveUsuarioIN) throws DAOException;
 }

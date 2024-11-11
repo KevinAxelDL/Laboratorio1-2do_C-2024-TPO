@@ -9,17 +9,12 @@ package Turnera_medica.Modelo;
  * @author KevinDL
  */
 public abstract class Usuario {
-    //Para que las subclases puedan acceder a sus atributos la visibilidad se definira como "protected"
+    // Para que las subclases puedan acceder a sus atributos la visibilidad se definira como "protected"
     protected int dni;
     protected String nombre;
     protected String apellido;
     protected String nombreUsuario;
     protected String claveUsuario;
-    
-    public static void ingresarAlSistema(String nUsuario, String cUsuario){
-        // Metodo de clase
-        // Loggeo en base a credenciales
-    }
     
     public Usuario(int dni, String nombre, String apellido, String nombreUsuario, String claveUsuario){
         this.dni = dni;
@@ -33,6 +28,5 @@ public abstract class Usuario {
         this.nombreUsuario = nombreUsuario;
         this.claveUsuario = claveUsuario;
     }
-    
     
 }

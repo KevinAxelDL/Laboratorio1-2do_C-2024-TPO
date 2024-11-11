@@ -4,28 +4,27 @@
  */
 package Turnera_medica.DAO.Interfaces;
 
+import Turnera_medica.Excepciones.DAOException;
 import Turnera_medica.Modelo.Administrador;
-import Turnera_medica.Modelo.Medico;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import Turnera_medica.Modelo.Usuario;
+import java.util.List;
 
 /**
  *
  * @author KevinDL
  */
-public interface AdministradorDAO extends UsuarioDAO{
-    // IMPORTENTE: como minimo debe crearse manualmente un Administrador en la BD (root)
+public interface AdministradorDAO{
     
     // Dar de alta registro
-    public void registrarAdministrador(Administrador nuevoAdmin);
+    public void registrarAdministrador(Administrador nuevoAdmin) throws DAOException;
     
     // Dar de baja registro
-    public void eliminarAdministrador(String nUsuario, String uClave);
+    public void eliminarAdministrador(String nUsuario)throws DAOException;;
+    
+    // Consultas
+    public List<Usuario> listarUsuariosConFuncion() throws DAOException;
     
     // Modificar registro
     
-    //Reportes
-    //public String pedirReporteGanancias(Medico m, LocalDate d, LocalTime t);
-    //public String pedirReporteGanancias(LocalDate d, LocalTime t);
-    //public String pedirReporteGanancias(); 
+    
 }
