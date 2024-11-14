@@ -28,14 +28,15 @@ public abstract class AdministradorServicios {
         }
     }
     
-    public static void eliminarAdministrador(String nUsuario) throws ServicioException{
+    public static int eliminarAdministrador(String nUsuario) throws ServicioException{
         AdministradorDAOH2 adminDAOH2 = new AdministradorDAOH2();
-        
+        int resultado;
         try {
-            adminDAOH2.eliminarAdministrador(nUsuario);
+            resultado = adminDAOH2.eliminarAdministrador(nUsuario);
         } catch (DAOException ex) {
             throw new ServicioException(ex.getMessage());
         }
+        return resultado;
     }
     
     public static List<Usuario> listarUsuariosConFuncion() throws ServicioException{

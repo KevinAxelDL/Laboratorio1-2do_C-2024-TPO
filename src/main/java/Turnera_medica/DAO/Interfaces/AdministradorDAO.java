@@ -19,7 +19,7 @@ public interface AdministradorDAO{
     public void registrarAdministrador(Administrador nuevoAdmin) throws DAOException;
     
     // Dar de baja registro
-    public void eliminarAdministrador(String nUsuario)throws DAOException;;
+    public int eliminarAdministrador(String nUsuario)throws DAOException;;
     
     // Consultas
     public List<Usuario> listarUsuariosConFuncion() throws DAOException;

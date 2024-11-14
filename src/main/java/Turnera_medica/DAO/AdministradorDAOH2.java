@@ -27,7 +27,8 @@ public class AdministradorDAOH2 implements AdministradorDAO {
     @Override
     public void registrarAdministrador(Administrador nuevoAdmin) throws DAOException{
         String operacionSQLAux1 = "SELECT ID FROM FUNCION WHERE NOMBRE = 'ADMINISTRADOR'";
-        String operacionSQL1 = "INSERT INTO USUARIO (NOMBRE_USUARIO, CLAVE_USUARIO) VALUES ('"+ nuevoAdmin.getNombreUsuario() +"','"+ nuevoAdmin.getClaveUsuario() +"')";
+        String operacionSQL1 = "INSERT INTO USUARIO (NOMBRE_USUARIO, CLAVE_USUARIO, NOMBRE, APELLIDO, DNI) "
+                + "VALUES ('"+ nuevoAdmin.getNombreUsuario() +"','"+ nuevoAdmin.getClaveUsuario() +"','"+ nuevoAdmin.getNombre() +"','"+ nuevoAdmin.getApellido() +"','"+ nuevoAdmin.getDni() +"')";
         String operacionSQL2 = "INSERT INTO USUARIO_POR_FUNCION (NOMBRE_USUARIO, ID_FUNCION) VALUES ('"+ nuevoAdmin.getNombreUsuario() +"',("+ operacionSQLAux1 +"))";
         Connection conexion = DBManager.connect(); // Se abre una conexion con la BD
         
@@ -58,15 +59,16 @@ public class AdministradorDAOH2 implements AdministradorDAO {
     }
 
     @Override
-    public void eliminarAdministrador(String nUsuario) throws DAOException{
+    public int eliminarAdministrador(String nUsuario) throws DAOException{
         String operacionSQL1 = "DELETE FROM USUARIO_POR_FUNCION WHERE NOMBRE_USUARIO = '"+ nUsuario +"';";
         String operacionSQL2 = "DELETE FROM USUARIO WHERE NOMBRE_USUARIO = '"+ nUsuario +"';";
         Connection conexion = DBManager.connect(); // Se abre una conexion con la BD
+        int registrosAfectados = 0;
         
         try {
             Statement operacion = conexion.createStatement(); 
             operacion.execute(operacionSQL1); // Ejecuta la operacion, elimina en tabla
-            operacion.execute(operacionSQL2); // Ejecuta la operacion, elimina en tabla
+            registrosAfectados = operacion.executeUpdate(operacionSQL2); // Ejecuta la operacion, elimina en tabla
             conexion.commit(); // Aplica los cambios an la BD
 	} catch (SQLException e) {
             try {
@@ -83,6 +85,7 @@ public class AdministradorDAOH2 implements AdministradorDAO {
 		e.printStackTrace();
             }
         }
+        return registrosAfectados;
     }
     
     @Override

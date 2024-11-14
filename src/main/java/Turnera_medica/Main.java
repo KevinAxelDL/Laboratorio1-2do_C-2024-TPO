@@ -4,7 +4,9 @@
  */
 package Turnera_medica;
 
-import Turnera_medica.UI.CoordinadorUI;
+import Turnera_medica.UI.IngresoCredencialesUI;
+
+
 
 /**
  *
@@ -13,8 +15,8 @@ import Turnera_medica.UI.CoordinadorUI;
 
 public class Main {
     public static void main(String[] args) {
-        CoordinadorUI newUI = new CoordinadorUI();
-        
-        newUI.eliminarAdministrador("prueba2");
+        IngresoCredencialesUI credencialesUI = new IngresoCredencialesUI();
+        credencialesUI.armar();
+        // NOTA: Se debe ejecutar primero el .jar de la BD para que funcione la aplicacion
     }
 }

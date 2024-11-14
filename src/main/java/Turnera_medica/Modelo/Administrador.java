@@ -27,5 +27,10 @@ public class Administrador extends Usuario{
     public String getClaveUsuario() {
         return super.claveUsuario;
     }
+
+    @Override
+    public String getNombreClase() {
+        return "ADMINISTRADOR";
+    }
     
 }

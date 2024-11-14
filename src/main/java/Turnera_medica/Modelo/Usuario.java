@@ -28,5 +28,26 @@ public abstract class Usuario {
         this.nombreUsuario = nombreUsuario;
         this.claveUsuario = claveUsuario;
     }
+
+    public int getDni() {
+        return dni;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public String getClaveUsuario() {
+        return claveUsuario;
+    }
     
+    public abstract String getNombreClase();
 }

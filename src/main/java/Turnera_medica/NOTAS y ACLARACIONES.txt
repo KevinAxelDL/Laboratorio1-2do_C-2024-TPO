@@ -1,0 +1,5 @@
++	El codigo de la UI  es poco eficiente. Hay mucho codigo repetido, Mediante herencia y/o uso de interfaces se puede mejorar en este aspecto.
++	El codigo de las implementaciones de las clases DAO repite codigo, esto puede mejorarse.
++	Se debe poder crear usuarios dejando campos que no son PK como NULL en vez de en "blanco" o como espacios, el modelo y la BD permite esto mas la UI no esta configurada correctamente.
++       Algunas clases no tienen implementaciones todavia o no son utiles y se eliminaran a futuro.
++       'root' y 'root' son las credenciales por defecto para poder usar la BD.
