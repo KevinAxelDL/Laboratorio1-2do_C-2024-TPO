@@ -8,22 +8,21 @@ package Turnera_medica.UI;
  *
  * @author KevinDL
  */
-import Turnera_medica.Excepciones.ServicioException;
-import Turnera_medica.Modelo.Administrador;
-import Turnera_medica.Modelo.Usuario;
-import Turnera_medica.Servicios.UsuarioServicios;
+import Turnera_medica.Excepciones.OperacionException;
+import Turnera_medica.UI.Operaciones.IngresoCredencialesOperacion;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class IngresoCredencialesUI implements ActionListener{
+public class IngresoCredencialesUI implements ActionListener, UserInterface{
     private JFrame framePrincipal;
     private JLabel usuarioLabel; 
     private JLabel claveLabel;
     private JTextField usuarioField; 
     private JPasswordField claveField; 
-    JButton boton = new JButton("OK");
+    // JButton boton = new JButton("OK");
+    private BotonUI boton;
     
     public IngresoCredencialesUI(){
         this.framePrincipal = new JFrame("Ingresar como usuario");
@@ -31,9 +30,11 @@ public class IngresoCredencialesUI implements ActionListener{
         this.claveLabel = new JLabel("Clave:");
         this.usuarioField = new JTextField(); // Ingreso
         this.claveField = new JPasswordField(); // Ingreso
-        this.boton = new JButton("OK");
+        // this.boton = new JButton("OK");
+        this.boton = new BotonUI("OK");
     }
     
+    @Override
     public void armar() {
         
         // Se define el comportamiento del frame 
@@ -42,7 +43,7 @@ public class IngresoCredencialesUI implements ActionListener{
         this.framePrincipal.setLayout(new GridLayout(3, 2)); // 3 filas, 2 columnas
         
         // Accion
-        this.boton.addActionListener(this); // Toma como parametro la una instancia de una clase que implemente ActionListener
+        this.boton.addActionListener(this); // Toma como parametro una instancia de una clase que implemente ActionListener
 
         // Agrega los componentes
         this.framePrincipal.add(usuarioLabel);
@@ -55,33 +56,22 @@ public class IngresoCredencialesUI implements ActionListener{
         framePrincipal.setVisible(true);
     }
     
-    private void hacerAccion(String usuario, String clave){
-        // Accion del boton
-        // NOTA: debe moficarse para que abra el menu que corresponde segun el tipo de usuario
-        Usuario usuarioRetornado = null;
-        try {
-            usuarioRetornado = UsuarioServicios.ingresarComoUsuario(usuario, clave);
-        } catch (ServicioException ex) {
-            MensajeUI mensaje = new MensajeUI(ex.getMessage()); // Muestra un frame con un mensaje
-            mensaje.mostrar();
-        }
-        crearMenu((Administrador) usuarioRetornado); // Segun la clase del usuario a abre un menu disitinto
+    @Override
+    public void cerrar(){
+        this.framePrincipal.dispose();
     }
     
-    private void crearMenu(Administrador a){
-        // El usuario es administrador, se le mostrara un menu correspondiente
-        MenuAdministradorUI menu = new MenuAdministradorUI(a);
-        menu.armar();
-        framePrincipal.dispose();
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == this.boton){
             // Se preciono el boton
-            System.out.println(this.usuarioField.getText());
-            System.out.println(this.claveField.getText());
-            hacerAccion(this.usuarioField.getText(), this.claveField.getText());
+            this.boton.setOperacion(new IngresoCredencialesOperacion(this.usuarioField.getText(), this.claveField.getText()));
+            try {
+                this.boton.activar();
+            } catch (OperacionException ex) {
+                MensajeUI mensaje = new MensajeUI(ex.getMessage()); // Muestra un frame con un mensaje
+                mensaje.mostrar();
+            }
         }
     }
 }
