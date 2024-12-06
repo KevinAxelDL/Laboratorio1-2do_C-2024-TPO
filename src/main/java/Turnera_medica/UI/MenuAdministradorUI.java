@@ -4,11 +4,13 @@
  */
 package Turnera_medica.UI;
 
+import Turnera_medica.Excepciones.OperacionException;
 import Turnera_medica.Modelo.Administrador;
+import Turnera_medica.UI.Misc.AdministradorPaneles;
+import Turnera_medica.UI.Operaciones.CrearFormularioNuevoUsuarioOperacion;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -17,21 +19,21 @@ import javax.swing.SwingConstants;
  *
  * @author KevinDL
  */
-public class MenuAdministradorUI implements ActionListener{
+public class MenuAdministradorUI implements ActionListener, UserInterface{
     private JFrame framePrincipal;
     private JLabel infoLabel; 
-    private JButton botonCrearUsuario;
-    private JButton botonEliminarUsuario;
-    private JButton botonVerUsuarios;
-    private JButton botonModificarUsuario;
+    private BotonUI botonCrearUsuario;
+    private BotonUI botonEliminarUsuario;
+    private BotonUI botonVerUsuarios;
+    private BotonUI botonModificarUsuario;
     
     public MenuAdministradorUI(Administrador administrador){
         framePrincipal = new JFrame("Menu administrador");
         infoLabel = new JLabel("Usuario activo: "+ administrador.getNombreUsuario());
-        botonCrearUsuario = new JButton("Crear usuario");
-        botonEliminarUsuario = new JButton("Eliminar usuario");
-        botonVerUsuarios = new JButton("Listar");
-        botonModificarUsuario = new JButton("Modificar usuario");
+        botonCrearUsuario = new BotonUI("Crear usuario");
+        botonEliminarUsuario = new BotonUI("Eliminar usuario");
+        botonVerUsuarios = new BotonUI("Listar");
+        botonModificarUsuario = new BotonUI("Modificar usuario");
         this.infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
     }
     
@@ -59,12 +61,6 @@ public class MenuAdministradorUI implements ActionListener{
         framePrincipal.setVisible(true);
     }
     
-    private void crearFormularioNuevoUsuario(){
-        // Accion del boton
-        FormularioUsuarioUI menu = new FormularioUsuarioUI();
-        menu.armar();
-    }
-    
     private void crearFormularioEliminarUsuario(){
         // Accion del boton
         IngresoUsuarioUI menu = new IngresoUsuarioUI();
@@ -75,38 +71,45 @@ public class MenuAdministradorUI implements ActionListener{
         // Accion del boton
         IngresoUsuarioUI menu = new IngresoUsuarioUI();
         //menu.armar();
-        MensajeUI mensaje = new MensajeUI("NOTA: FALTA IMPLEMENTACION");
-        mensaje.mostrar();
+        AdministradorPaneles.mostrarMensaje("NOTA: FALTA IMPLEMENTACION");
     }
     
-    private void crearListadpUsuarios(){
+    private void crearListadoUsuarios(){
         // Accion del boton
         IngresoUsuarioUI menu = new IngresoUsuarioUI();
         //menu.armar();
-        MensajeUI mensaje = new MensajeUI("NOTA: FALTA IMPLEMENTACION");
-        mensaje.mostrar();
+        AdministradorPaneles.mostrarMensaje("NOTA: FALTA IMPLEMENTACION");
     }
     
-    
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Abre un frame diferente dependiento del boton
+        // Abre un frame diferente dependiento del boton clickeado
         
         if(e.getSource() == this.botonCrearUsuario){
-            crearFormularioNuevoUsuario();
+            CrearFormularioNuevoUsuarioOperacion operacion = new CrearFormularioNuevoUsuarioOperacion();
+            this.botonCrearUsuario.setOperacion(operacion);
+            try {
+                this.botonCrearUsuario.activar();
+            } catch (OperacionException ex) {
+                AdministradorPaneles.mostrarMensaje(ex.getMessage());
+            }
         }
         
         if(e.getSource() == this.botonEliminarUsuario){
-            crearFormularioEliminarUsuario();
+            crearFormularioEliminarUsuario();// REEMPLAZAR POR BOTONUI
         }
         
         if(e.getSource() == this.botonModificarUsuario){
-            crearFormularioModificarUsuario();
+            crearFormularioModificarUsuario();// REEMPLAZAR POR BOTONUI
         }
         
         if(e.getSource() == this.botonVerUsuarios){
-            crearListadpUsuarios();
+            crearListadoUsuarios();// REEMPLAZAR POR BOTONUI
         }
+    }
+
+    @Override
+    public void cerrar() {
+        this.framePrincipal.dispose();
     }
 }

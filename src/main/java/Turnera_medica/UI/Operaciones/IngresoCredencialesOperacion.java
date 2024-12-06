@@ -6,11 +6,8 @@ package Turnera_medica.UI.Operaciones;
 
 import Turnera_medica.Excepciones.OperacionException;
 import Turnera_medica.Excepciones.ServicioException;
-import Turnera_medica.Modelo.Administrador;
 import Turnera_medica.Modelo.Usuario;
 import Turnera_medica.Servicios.UsuarioServicios;
-import Turnera_medica.UI.MensajeUI;
-import Turnera_medica.UI.MenuAdministradorUI;
 import Turnera_medica.UI.Misc.AdministradorPaneles;
 
 /**

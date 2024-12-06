@@ -4,26 +4,27 @@
  */
 package Turnera_medica.UI;
 
-import Turnera_medica.Excepciones.ServicioException;
+import Turnera_medica.Excepciones.OperacionException;
 import Turnera_medica.Modelo.Administrador;
-import Turnera_medica.Servicios.AdministradorServicios;
+import Turnera_medica.UI.Misc.AdministradorPaneles;
+import Turnera_medica.UI.Operaciones.CrearNuevoUsuarioOperacion;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import java.lang.Class;
 
 /**
  *
  * @author KevinDL
  */
-public class FormularioUsuarioUI implements ActionListener{
+public class FormularioUsuarioUI implements ActionListener, UserInterface{
     private JFrame framePrincipal;
     private JLabel usuarioLabel; 
     private JLabel claveLabel;
@@ -38,13 +39,13 @@ public class FormularioUsuarioUI implements ActionListener{
     private JTextField apellidoField;
     private JTextField dniField;
 
-    private JButton boton;
+    private BotonUI botonOk;
     private JRadioButton opcion1;
     private JRadioButton opcion2;
     private JRadioButton opcion3;
     private ButtonGroup grupo;
     
-    private String opcionSeleccionada;
+    private Class<?> opcionSeleccionada;
     
     public FormularioUsuarioUI(){
         this.framePrincipal = new JFrame("Crear/Modificar un nuevo usuario");
@@ -61,10 +62,10 @@ public class FormularioUsuarioUI implements ActionListener{
         this.apellidoField = new JTextField();
         this.dniField = new JTextField();
         
-        this.boton = new JButton("OK");
+        this.botonOk = new BotonUI("OK");
         this.opcion1 = new JRadioButton("ADMINISTRADOR");
-        this.opcion2 = new JRadioButton("ADMINISTRADOR"); // CAMBIAR A MEDICO
-        this.opcion3 = new JRadioButton("ADMINISTRADOR"); // CAMBIAR A PACIENTE
+        this.opcion2 = new JRadioButton("MEDICO");
+        this.opcion3 = new JRadioButton("PACIENTE");
         this.grupo = new ButtonGroup();
         
         // Se agrupan para asegurar una sola opcion seleccionada
@@ -75,6 +76,7 @@ public class FormularioUsuarioUI implements ActionListener{
         this.opcionSeleccionada = null;
     }
     
+    @Override
     public void armar() {
         
         // Se define el comportamiento del frame 
@@ -82,7 +84,7 @@ public class FormularioUsuarioUI implements ActionListener{
         this.framePrincipal.setLayout(new GridLayout(7, 2)); // 7 filas, 2 columnas
         
         // Accion
-        this.boton.addActionListener(this); // Toma como parametro la una instancia de una clase que implemente ActionListener (en este caso es esta instancia)
+        this.botonOk.addActionListener(this); // Toma como parametro la una instancia de una clase que implemente ActionListener (en este caso es esta instancia)
         this.opcion1.addActionListener(this);
         this.opcion2.addActionListener(this);
         this.opcion3.addActionListener(this);
@@ -111,56 +113,44 @@ public class FormularioUsuarioUI implements ActionListener{
         opcionesPanel.add(this.opcion3);
         this.framePrincipal.add(opcionesPanel); // Se asignan los botones a un panel y se agregan al frame
         
-        this.framePrincipal.add(this.boton);
+        this.framePrincipal.add(this.botonOk);
 
         // Hace visible el frame
         framePrincipal.setVisible(true);
     }
     
-    private void hacerAccion(String usuario, String clave, String nombre, String apellido, String dni, String opcionSeleccionada){
-        // Accion del boton
-        //NOTA: DE MOMENTO SOLO SE PUEDE CREAR UN ADMINISTRADOR, UN SWITCH A FUTURO NO ES IDEAL PARA DETERMINAR QUE USARIO SE CREA
-        int dniComoInt;
-        
-        try {
-            dniComoInt = Integer.parseInt(dni); // Los caracteres deben ser numeros
-            Administrador nuevoAdmin = new Administrador(dniComoInt,  nombre,  apellido, usuario, clave);
-            
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == this.botonOk){
+            // Envia formulario
+            CrearNuevoUsuarioOperacion operacion =  new CrearNuevoUsuarioOperacion(this.usuarioField.getText(), this.claveField.getText(), this.nombreField.getText(), this.apellidoField.getText(), this.dniField.getText(), this.opcionSeleccionada);
+            this.botonOk.setOperacion(operacion);
             try {
-                AdministradorServicios.registrarAdministrador(nuevoAdmin);
-                MensajeUI mensaje = new MensajeUI("Usuario registrado exitosamente!");
-                mensaje.mostrar();
-                framePrincipal.dispose();
-                
-            } catch (ServicioException ex) {
-                MensajeUI mensaje = new MensajeUI(ex.getMessage());
-                mensaje.mostrar();
+                this.botonOk.activar();
+                AdministradorPaneles.mostrarMensaje("OPERACION EXITOSA!");
+            } catch (OperacionException ex) {
+                AdministradorPaneles.mostrarMensaje(ex.getMessage());
             }
-            
-        } catch (NumberFormatException e) {
-            MensajeUI mensaje = new MensajeUI("DNI NO VALIDO!");
-            mensaje.mostrar();
-        } 
+        }
+        
+        if(e.getSource() == this.opcion1){// ADMINISTRADOR
+            this.opcionSeleccionada = Administrador.class;
+        }
+        
+        if(e.getSource() == this.opcion2){// MEDICO
+            //this.opcionSeleccionada = Medico.class;
+            this.opcionSeleccionada = null;
+        }
+        
+        if(e.getSource() == this.opcion3){// PACIENTE
+            //this.opcionSeleccionada = Paciente.class;
+            this.opcionSeleccionada = null;
+        }
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == this.boton){
-            // Se preciono el boton
-            hacerAccion(this.usuarioField.getText(), this.claveField.getText(), this.nombreField.getText(), this.apellidoField.getText(), this.dniField.getText(), this.opcionSeleccionada);
-        }
-        
-        if(e.getSource() == this.opcion1){
-            this.opcionSeleccionada = this.opcion1.getText();
-        }
-        
-        if(e.getSource() == this.opcion2){
-            this.opcionSeleccionada = this.opcion2.getText();
-        }
-        
-        if(e.getSource() == this.opcion3){
-            this.opcionSeleccionada = this.opcion3.getText();
-        }
+    public void cerrar() {
+        this.framePrincipal.dispose();
     }
     
     

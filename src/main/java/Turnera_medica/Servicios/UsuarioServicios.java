@@ -13,7 +13,9 @@ import Turnera_medica.Modelo.Usuario;
  *
  * @author KevinDL
  */
-public abstract class UsuarioServicios {
+public class UsuarioServicios {
+    
+    // Metodos de clase
     public static Usuario ingresarComoUsuario(String nombreUsuario, String claveUsuario) throws ServicioException{
         UsuarioDAOH2 userH2 = new UsuarioDAOH2();
         Usuario usuario = null;
@@ -24,4 +26,43 @@ public abstract class UsuarioServicios {
         }
         return usuario;
     }
+    
+    // Verificacion de datos
+    public void verificarDatoClave (String dato) throws ServicioException{
+        if(dato.isBlank() || dato.isEmpty()){
+            throw new ServicioException("CLAVE NO VALIDA!");
+        }
+    };
+    
+    public void verificarDatoUsuario (String dato) throws ServicioException{
+        if(dato.isBlank() || dato.isEmpty()){
+            throw new ServicioException("NOMBRE DE USUARIO NO VALIDO!");
+        }
+    };
+        
+    
+    public void verificarDatoDNI(String dato) throws ServicioException{
+        if(dato.isBlank() || dato.isEmpty()){
+            throw new ServicioException("DNI NO VALIDO!");
+        }else{
+            try {
+                Integer.parseInt(dato); // Los caracteres deben ser numeros
+            } catch (NumberFormatException e) {
+                throw new ServicioException("DNI NO VALIDO!");
+            }
+        } 
+    }
+    
+    public void verificarDatoNombreApellido(String dato) throws ServicioException{
+        if(dato.isBlank()|| dato.isEmpty() || dato.matches(".*\\d.*") || dato.matches(".*[^a-zA-Z0-9].*")){
+            throw new ServicioException("NOMBRE/APELLIDO NO VALIDO!");
+        }
+    };
+    
+    public void verificarDatoTipoUsuario(Class<?> dato) throws ServicioException{
+        if(dato == null){
+            throw new ServicioException("INGRESE UN TIPO DE USUARIO VALIDO!");
+        }
+    };
+
 }

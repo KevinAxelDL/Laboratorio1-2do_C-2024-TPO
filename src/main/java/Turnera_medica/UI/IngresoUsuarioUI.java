@@ -5,15 +5,11 @@
 package Turnera_medica.UI;
 
 import Turnera_medica.Excepciones.ServicioException;
-import Turnera_medica.Modelo.Administrador;
-import Turnera_medica.Modelo.Usuario;
 import Turnera_medica.Servicios.AdministradorServicios;
-import Turnera_medica.Servicios.UsuarioServicios;
+import Turnera_medica.UI.Misc.AdministradorPaneles;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -72,8 +68,7 @@ public class IngresoUsuarioUI implements ActionListener{
             MensajeUI mensaje = new MensajeUI("Operacion exitosa, registros afectados: "+ resultado);
             mensaje.mostrar();
         } catch (ServicioException ex) {
-            MensajeUI mensaje = new MensajeUI(ex.getMessage());
-            mensaje.mostrar();
+            AdministradorPaneles.mostrarMensaje(ex.getMessage());
         }
     }
 }

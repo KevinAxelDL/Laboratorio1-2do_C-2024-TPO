@@ -6,7 +6,9 @@ package Turnera_medica.UI.Misc;
 
 import Turnera_medica.Modelo.Administrador;
 import Turnera_medica.Modelo.Usuario;
+import Turnera_medica.UI.FormularioUsuarioUI;
 import Turnera_medica.UI.IngresoCredencialesUI;
+import Turnera_medica.UI.MensajeUI;
 import Turnera_medica.UI.MenuAdministradorUI;
 import Turnera_medica.UI.UserInterface;
 
@@ -29,7 +31,6 @@ public abstract class AdministradorPaneles {
             menu.armar();
         }
         */
-        
     }
     
     public static void mostrarIngresoCredenciales(){
@@ -38,8 +39,19 @@ public abstract class AdministradorPaneles {
         menu.armar();
     }
     
-    public static void cerrarUI(UserInterface ui){
+    public static void mostrarFormularioNuevoUsuario(){
+        // Accion del boton
+        FormularioUsuarioUI formulario = new FormularioUsuarioUI();
+        formulario.armar();
+    }
+    
+    public static void cerrarUI(UserInterface ui){ // ui es una instancia que implementa UserInterface
         // Cierra cualquier instancia de UserInterface
         ui.cerrar();
+    }
+    
+    public static void mostrarMensaje(String texto){
+        MensajeUI mensaje = new MensajeUI(texto);
+        mensaje.mostrar();
     }
 }

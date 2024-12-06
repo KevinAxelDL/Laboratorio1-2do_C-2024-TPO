@@ -16,8 +16,9 @@ import java.util.List;
  *
  * @author KevinDL
  */
-public abstract class AdministradorServicios {
+public class AdministradorServicios extends UsuarioServicios{
     
+    // Metodos de clase
     public static void registrarAdministrador(Administrador nuevoAdmin) throws ServicioException{
         AdministradorDAOH2 adminDAOH2 = new AdministradorDAOH2();
         
@@ -51,4 +52,27 @@ public abstract class AdministradorServicios {
         
         return resultado;
     }
+    
+    // Verificacion de datos
+    @Override
+    public void verificarDatoDNI(String dato) throws ServicioException{
+        super.verificarDatoDNI(dato);
+    }
+    
+    @Override
+    public void verificarDatoNombreApellido(String dato) throws ServicioException{
+        super.verificarDatoNombreApellido(dato);
+    }
+
+    @Override
+    public void verificarDatoUsuario(String dato) throws ServicioException {
+        super.verificarDatoUsuario(dato);
+    }
+
+    @Override
+    public void verificarDatoClave(String dato) throws ServicioException {
+        super.verificarDatoClave(dato);
+    }
+    
+    
 }

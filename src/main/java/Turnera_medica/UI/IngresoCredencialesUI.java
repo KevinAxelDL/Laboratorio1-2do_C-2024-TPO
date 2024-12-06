@@ -9,6 +9,7 @@ package Turnera_medica.UI;
  * @author KevinDL
  */
 import Turnera_medica.Excepciones.OperacionException;
+import Turnera_medica.UI.Misc.AdministradorPaneles;
 import Turnera_medica.UI.Operaciones.IngresoCredencialesOperacion;
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +22,6 @@ public class IngresoCredencialesUI implements ActionListener, UserInterface{
     private JLabel claveLabel;
     private JTextField usuarioField; 
     private JPasswordField claveField; 
-    // JButton boton = new JButton("OK");
     private BotonUI boton;
     
     public IngresoCredencialesUI(){
@@ -30,7 +30,6 @@ public class IngresoCredencialesUI implements ActionListener, UserInterface{
         this.claveLabel = new JLabel("Clave:");
         this.usuarioField = new JTextField(); // Ingreso
         this.claveField = new JPasswordField(); // Ingreso
-        // this.boton = new JButton("OK");
         this.boton = new BotonUI("OK");
     }
     
@@ -68,9 +67,9 @@ public class IngresoCredencialesUI implements ActionListener, UserInterface{
             this.boton.setOperacion(new IngresoCredencialesOperacion(this.usuarioField.getText(), this.claveField.getText()));
             try {
                 this.boton.activar();
+                this.framePrincipal.dispose();
             } catch (OperacionException ex) {
-                MensajeUI mensaje = new MensajeUI(ex.getMessage()); // Muestra un frame con un mensaje
-                mensaje.mostrar();
+                AdministradorPaneles.mostrarMensaje(ex.getMessage());
             }
         }
     }
