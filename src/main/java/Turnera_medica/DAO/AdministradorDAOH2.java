@@ -90,23 +90,58 @@ public class AdministradorDAOH2 implements AdministradorDAO {
     
     @Override
     public List<Usuario> listarUsuariosConFuncion() throws DAOException {
-        String operacionSQL1 = "SELECT u.NOMBRE, APELLIDO, DNI, u.NOMBRE_USUARIO, CLAVE_USUARIO, f.NOMBRE AS NOMBRE_FUNCION FROM USUARIO u JOIN USUARIO_POR_FUNCION uf JOIN FUNCION f";
+        String operacionSQL1 = "SELECT DISTINCT u.NOMBRE, APELLIDO, DNI, u.NOMBRE_USUARIO, CLAVE_USUARIO, f.NOMBRE AS NOMBRE_FUNCION "
+                + "FROM USUARIO u JOIN USUARIO_POR_FUNCION uf JOIN FUNCION f "
+                + "WHERE ID_FUNCION = ID";
         Connection conexion = DBManager.connect(); // Se abre una conexion con la BD
         ResultSet rs = null;
         List<Usuario> resultado = new ArrayList();
         
-        try {
+        try{
+            try {
             Statement operacion = conexion.createStatement(); 
             rs = operacion.executeQuery(operacionSQL1); 
-	} catch (SQLException e) {
-            try {
-		conexion.rollback();
-		e.printStackTrace();
-                throw new DAOException("ERROR DESCONOCIDO");
-            } catch (SQLException e1) {
-		e1.printStackTrace();
+            } catch (SQLException e) {
+                try {
+                    conexion.rollback();
+                    e.printStackTrace();
+                    throw new DAOException("ERROR DESCONOCIDO");
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
             }
-        } finally {
+        
+            try {
+                // Se instancian usuarios en base al result set retornado
+                while(rs.next()){
+                    String nombre = rs.getString("NOMBRE");
+                    String apellido = rs.getString("APELLIDO");
+                    int dni = rs.getInt("DNI");
+                    String nombreUsuario = rs.getString("NOMBRE_USUARIO");
+                    String claveUsuario = rs.getString("CLAVE_USUARIO");
+                    Usuario usuario = null;
+
+                    switch(rs.getString("NOMBRE_FUNCION")){
+                        case "MEDICO":
+                            usuario = new Medico( dni, nombre, apellido, nombreUsuario, claveUsuario);
+                            break;
+                        case "ADMINISTRADOR":
+                            usuario = new Administrador( dni, nombre, apellido, nombreUsuario, claveUsuario);
+                            break;
+                        case "PACIENTE":
+                            usuario = new Administrador( dni, nombre, apellido, nombreUsuario, claveUsuario);
+                            break;
+                    }
+                    resultado.add(usuario);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                throw new DAOException("ERROR DESCONOCIDO");
+            }
+        }catch(DAOException ex2){
+           throw new DAOException(ex2.getMessage()) ;
+           
+        }finally{
             try {
                 conexion.close(); // Se CIERRA la conexion para liberar el acceso
             } catch (SQLException e) {
@@ -114,32 +149,7 @@ public class AdministradorDAOH2 implements AdministradorDAO {
             }
         }
         
-        try {
-            // Se instancian usuarios en base al result set retornado
-            while(rs.next()){
-                String nombre = rs.getString("NOMBRE");
-                String apellido = rs.getString("APELLIDO");
-                int dni = rs.getInt("DNI");
-                String nombreUsuario = rs.getString("NOMBRE_USUARIO");
-                String claveUsuario = rs.getString("CLAVE_USUARIO");
-                Usuario usuario = null;
-                
-                switch(rs.getString("NOMBRE_FUNCION")){
-                    case "MEDICO":
-                        usuario = new Medico( dni, nombre, apellido, nombreUsuario, claveUsuario);
-                        break;
-                    case "ADMINISTRADOR":
-                        usuario = new Administrador( dni, nombre, apellido, nombreUsuario, claveUsuario);
-                        break;
-                    case "PACIENTE":
-                        usuario = new Administrador( dni, nombre, apellido, nombreUsuario, claveUsuario);
-                        break;
-                }
-                resultado.add(usuario);
-            }
-        } catch (SQLException ex) {                    
-            throw new DAOException("ERROR DESCONOCIDO");
-        }
+        
         return resultado;
     }
 }

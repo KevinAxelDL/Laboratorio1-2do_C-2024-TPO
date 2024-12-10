@@ -2,21 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Turnera_medica.UI.Misc;
+package Turnera_medica.UI.Mediadores;
 
 import Turnera_medica.Modelo.Administrador;
 import Turnera_medica.Modelo.Usuario;
-import Turnera_medica.UI.FormularioUsuarioUI;
-import Turnera_medica.UI.IngresoCredencialesUI;
-import Turnera_medica.UI.MensajeUI;
-import Turnera_medica.UI.MenuAdministradorUI;
-import Turnera_medica.UI.UserInterface;
-
+import Turnera_medica.UI.Frames.FormularioUsuarioUI;
+import Turnera_medica.UI.Frames.IngresoCredencialesUI;
+import Turnera_medica.UI.Frames.IngresoNombreUsuarioUI;
+import Turnera_medica.UI.Frames.MensajeUI;
+import Turnera_medica.UI.Frames.MenuAdministradorUI;
+import Turnera_medica.UI.Frames.UserInterface;
 /**
  *
  * @author KevinDL
  */
-public abstract class AdministradorPaneles {
+public abstract class AdministradorFrames {
+    private static MensajeUI ultimoMensaje;
     
     public static void mostrarMenu(Usuario usuario){
         // Abre menu de administrador
@@ -35,14 +36,19 @@ public abstract class AdministradorPaneles {
     
     public static void mostrarIngresoCredenciales(){
         // Abre
-        IngresoCredencialesUI menu = new IngresoCredencialesUI();
-        menu.armar();
+        IngresoCredencialesUI ui = new IngresoCredencialesUI();
+        ui.armar();
     }
     
     public static void mostrarFormularioNuevoUsuario(){
         // Accion del boton
-        FormularioUsuarioUI formulario = new FormularioUsuarioUI();
-        formulario.armar();
+        FormularioUsuarioUI ui = new FormularioUsuarioUI();
+        ui.armar();
+    }
+    
+    public static void mostrarIngresoNombreUsuario(String texto){
+        IngresoNombreUsuarioUI ui = new IngresoNombreUsuarioUI(texto);
+        ui.armar();
     }
     
     public static void cerrarUI(UserInterface ui){ // ui es una instancia que implementa UserInterface
@@ -52,6 +58,14 @@ public abstract class AdministradorPaneles {
     
     public static void mostrarMensaje(String texto){
         MensajeUI mensaje = new MensajeUI(texto);
-        mensaje.mostrar();
+        if(ultimoMensaje != null){
+            ultimoMensaje.cerrar();
+        }
+        ultimoMensaje = mensaje;
+        mensaje.armar();
+    }
+    
+    public static void mostrarTablaUsuarios(String texto){
+        
     }
 }

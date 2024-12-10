@@ -8,7 +8,7 @@ import Turnera_medica.Excepciones.OperacionException;
 import Turnera_medica.Excepciones.ServicioException;
 import Turnera_medica.Modelo.Usuario;
 import Turnera_medica.Servicios.UsuarioServicios;
-import Turnera_medica.UI.Misc.AdministradorPaneles;
+import Turnera_medica.UI.Mediadores.AdministradorFrames;
 
 /**
  *
@@ -33,7 +33,7 @@ public class IngresoCredencialesOperacion implements Operacion{
         } catch (ServicioException ex) {
             throw new OperacionException(ex.getMessage());
         }
-        AdministradorPaneles.mostrarMenu(usuarioRetornado); // Indica que se debe mostrar un menu nuevo
+        AdministradorFrames.mostrarMenu(usuarioRetornado); // Indica que se debe mostrar un menu nuevo
         return null;
     }
     

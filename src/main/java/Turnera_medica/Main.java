@@ -4,7 +4,9 @@
  */
 package Turnera_medica;
 
-import Turnera_medica.UI.IngresoCredencialesUI;
+import Turnera_medica.UI.Paneles.PanelTablaUsuariosUI;
+import Turnera_medica.UI.Incompleto.ReportesAdministradorUI;
+import Turnera_medica.UI.Frames.IngresoCredencialesUI;
 
 
 
@@ -15,6 +17,9 @@ import Turnera_medica.UI.IngresoCredencialesUI;
 
 public class Main {
     public static void main(String[] args) {
+        ReportesAdministradorUI dev = new ReportesAdministradorUI();
+        dev.armar();
+        //
         IngresoCredencialesUI credencialesUI = new IngresoCredencialesUI();
         credencialesUI.armar();
         // NOTA: Se debe ejecutar primero el .jar de la BD para que funcione la aplicacion

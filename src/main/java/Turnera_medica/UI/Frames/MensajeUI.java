@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Turnera_medica.UI;
+package Turnera_medica.UI.Frames;
 
 import java.awt.GridLayout;
 import javax.swing.JFrame;
@@ -13,17 +13,16 @@ import javax.swing.SwingConstants;
  *
  * @author KevinDL
  */
-public class MensajeUI {
-    private JFrame framePrincipal = new JFrame("NOTIFICACION!");
+public class MensajeUI extends UserInterface{
     private JLabel mensajeLabel; 
     
     public MensajeUI(String mensaje){
-        mensajeLabel = new JLabel(mensaje);
-        this.mensajeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        super("NOTIFICACION!");
+        this.mensajeLabel = new JLabel(mensaje);
     }
 
-    public void mostrar(){
-        
+    @Override
+    public void armar() {
         // Se define el comportamiento del frame 
         framePrincipal.setSize(400, 150);
         framePrincipal.setLayout(new GridLayout(1, 1)); // 1 fila, 1 columna
@@ -32,6 +31,8 @@ public class MensajeUI {
         framePrincipal.add(mensajeLabel);
 
         // Hace visible el frame
+        this.mensajeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        this.centrar();
         framePrincipal.setVisible(true);
     }
 }

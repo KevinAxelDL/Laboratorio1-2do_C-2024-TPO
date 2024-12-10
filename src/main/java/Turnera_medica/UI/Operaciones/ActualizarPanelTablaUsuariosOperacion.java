@@ -5,18 +5,23 @@
 package Turnera_medica.UI.Operaciones;
 
 import Turnera_medica.Excepciones.OperacionException;
-import Turnera_medica.UI.Mediadores.AdministradorFrames;
+import Turnera_medica.UI.Paneles.PanelTablaUsuariosUI;
 
 /**
  *
  * @author KevinDL
  */
-public class CrearFormularioNuevoUsuarioOperacion implements Operacion{
-
+public class ActualizarPanelTablaUsuariosOperacion implements Operacion{
+    private PanelTablaUsuariosUI panel;
+    
+    public ActualizarPanelTablaUsuariosOperacion(PanelTablaUsuariosUI panel){
+        this.panel = panel;
+    }
+        
     @Override
     public Object realizar() throws OperacionException {
-        // Accion del boton
-        AdministradorFrames.mostrarFormularioNuevoUsuario();
+        //Obtencion de datos
+        this.panel.actualizar();
         return null;
     }
     

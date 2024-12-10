@@ -2,11 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Turnera_medica.UI;
+package Turnera_medica.UI.Frames;
 
 import Turnera_medica.Excepciones.OperacionException;
 import Turnera_medica.Modelo.Administrador;
-import Turnera_medica.UI.Misc.AdministradorPaneles;
+import Turnera_medica.UI.Botones.BotonUI;
+import Turnera_medica.UI.Mediadores.AdministradorFrames;
 import Turnera_medica.UI.Operaciones.CrearNuevoUsuarioOperacion;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -24,8 +25,7 @@ import java.lang.Class;
  *
  * @author KevinDL
  */
-public class FormularioUsuarioUI implements ActionListener, UserInterface{
-    private JFrame framePrincipal;
+public class FormularioUsuarioUI extends UserInterface implements ActionListener{
     private JLabel usuarioLabel; 
     private JLabel claveLabel;
     private JLabel nombreLabel;
@@ -48,7 +48,7 @@ public class FormularioUsuarioUI implements ActionListener, UserInterface{
     private Class<?> opcionSeleccionada;
     
     public FormularioUsuarioUI(){
-        this.framePrincipal = new JFrame("Crear/Modificar un nuevo usuario");
+        super("Crear un nuevo usuario");
         this.usuarioLabel = new JLabel("Usuario:"); 
         this.claveLabel = new JLabel("Clave:");
         this.nombreLabel = new JLabel("Nombre:");
@@ -74,14 +74,15 @@ public class FormularioUsuarioUI implements ActionListener, UserInterface{
         this.grupo.add(opcion3);
         
         this.opcionSeleccionada = null;
+        
+        super.framePrincipal.setSize(800, 350);
     }
     
     @Override
     public void armar() {
         
         // Se define el comportamiento del frame 
-        this.framePrincipal.setSize(800, 350);
-        this.framePrincipal.setLayout(new GridLayout(7, 2)); // 7 filas, 2 columnas
+        super.framePrincipal.setLayout(new GridLayout(7, 2)); // 7 filas, 2 columnas
         
         // Accion
         this.botonOk.addActionListener(this); // Toma como parametro la una instancia de una clase que implemente ActionListener (en este caso es esta instancia)
@@ -90,33 +91,34 @@ public class FormularioUsuarioUI implements ActionListener, UserInterface{
         this.opcion3.addActionListener(this);
         
         // Agrega los componentes
-        this.framePrincipal.add(this.usuarioLabel);
-        this.framePrincipal.add(this.usuarioField);
+        super.framePrincipal.add(this.usuarioLabel);
+        super.framePrincipal.add(this.usuarioField);
         
-        this.framePrincipal.add(this.claveLabel);
-        this.framePrincipal.add(this.claveField);
+        super.framePrincipal.add(this.claveLabel);
+        super.framePrincipal.add(this.claveField);
         
-        this.framePrincipal.add(this.nombreLabel);
-        this.framePrincipal.add(this.nombreField);
+        super.framePrincipal.add(this.nombreLabel);
+        super.framePrincipal.add(this.nombreField);
         
-        this.framePrincipal.add(this.apellidoLabel);
-        this.framePrincipal.add(this.apellidoField);
+        super.framePrincipal.add(this.apellidoLabel);
+        super.framePrincipal.add(this.apellidoField);
         
-        this.framePrincipal.add(this.dniLabel);
-        this.framePrincipal.add(this.dniField);
+        super.framePrincipal.add(this.dniLabel);
+        super.framePrincipal.add(this.dniField);
         
-        this.framePrincipal.add(this.tipoUsuarioLabel);
+        super.framePrincipal.add(this.tipoUsuarioLabel);
 
         JPanel opcionesPanel = new JPanel(); 
         opcionesPanel.add(this.opcion1);
         opcionesPanel.add(this.opcion2);
         opcionesPanel.add(this.opcion3);
-        this.framePrincipal.add(opcionesPanel); // Se asignan los botones a un panel y se agregan al frame
+        super.framePrincipal.add(opcionesPanel); // Se asignan los botones a un panel y se agregan al frame
         
-        this.framePrincipal.add(this.botonOk);
+        super.framePrincipal.add(this.botonOk);
 
         // Hace visible el frame
-        framePrincipal.setVisible(true);
+        super.centrar();
+        super.framePrincipal.setVisible(true);
     }
     
     @Override
@@ -127,9 +129,9 @@ public class FormularioUsuarioUI implements ActionListener, UserInterface{
             this.botonOk.setOperacion(operacion);
             try {
                 this.botonOk.activar();
-                AdministradorPaneles.mostrarMensaje("OPERACION EXITOSA!");
+                AdministradorFrames.mostrarMensaje("OPERACION EXITOSA!");
             } catch (OperacionException ex) {
-                AdministradorPaneles.mostrarMensaje(ex.getMessage());
+                AdministradorFrames.mostrarMensaje(ex.getMessage());
             }
         }
         
@@ -147,11 +149,4 @@ public class FormularioUsuarioUI implements ActionListener, UserInterface{
             this.opcionSeleccionada = null;
         }
     }
-
-    @Override
-    public void cerrar() {
-        this.framePrincipal.dispose();
-    }
-    
-    
 }

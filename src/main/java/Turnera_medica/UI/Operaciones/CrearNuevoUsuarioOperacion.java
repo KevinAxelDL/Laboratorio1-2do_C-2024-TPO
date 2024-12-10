@@ -8,8 +8,6 @@ import Turnera_medica.Excepciones.OperacionException;
 import Turnera_medica.Excepciones.ServicioException;
 import Turnera_medica.Modelo.Administrador;
 import Turnera_medica.Servicios.AdministradorServicios;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -30,6 +28,10 @@ public class CrearNuevoUsuarioOperacion implements Operacion{
         this.apellido = apellido;
         this.dni = dni;
         this.opcionSeleccionada = opcionSeleccionada;
+    }
+    
+    public CrearNuevoUsuarioOperacion(){
+        
     }
 
     @Override

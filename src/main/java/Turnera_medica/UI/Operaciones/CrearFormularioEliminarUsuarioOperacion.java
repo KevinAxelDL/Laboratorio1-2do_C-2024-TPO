@@ -11,12 +11,11 @@ import Turnera_medica.UI.Mediadores.AdministradorFrames;
  *
  * @author KevinDL
  */
-public class CrearFormularioNuevoUsuarioOperacion implements Operacion{
+public class CrearFormularioEliminarUsuarioOperacion implements Operacion{
 
     @Override
     public Object realizar() throws OperacionException {
-        // Accion del boton
-        AdministradorFrames.mostrarFormularioNuevoUsuario();
+        AdministradorFrames.mostrarIngresoNombreUsuario("Eliminar usuario");
         return null;
     }
     

@@ -12,10 +12,6 @@ import Turnera_medica.Servicios.AdministradorServicios;
  */
 public class Administrador extends Usuario{
     
-    public Administrador(String nUsuario, String uClave){
-        super(nUsuario, uClave);
-    }
-    
     public Administrador(int dni, String nombre, String apellido, String nombreUsuario, String claveUsuario){
         super( dni,  nombre,  apellido,  nombreUsuario,  claveUsuario);
     }
