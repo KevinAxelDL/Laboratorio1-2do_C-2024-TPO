@@ -7,7 +7,9 @@ package Turnera_medica.UI.Operaciones;
 import Turnera_medica.Excepciones.OperacionException;
 import Turnera_medica.Excepciones.ServicioException;
 import Turnera_medica.Modelo.Administrador;
+import Turnera_medica.Modelo.Usuario;
 import Turnera_medica.Servicios.AdministradorServicios;
+import java.util.List;
 
 /**
  *
@@ -19,19 +21,16 @@ public class CrearNuevoUsuarioOperacion implements Operacion{
     private String nombre; 
     private String apellido;
     private String dni; 
-    private Class<?> opcionSeleccionada;
+    private List<Class<?>> opcionesUsuario;
     
-    public CrearNuevoUsuarioOperacion(String usuario, String clave, String nombre, String apellido, String dni, Class<?> opcionSeleccionada){
+    public CrearNuevoUsuarioOperacion(String usuario, String clave, String nombre, 
+            String apellido, String dni, List<Class<?>> opcionesUsuario){
         this.usuario = usuario;
         this.clave = clave;
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
-        this.opcionSeleccionada = opcionSeleccionada;
-    }
-    
-    public CrearNuevoUsuarioOperacion(){
-        
+        this.opcionesUsuario = opcionesUsuario;
     }
 
     @Override
@@ -41,47 +40,37 @@ public class CrearNuevoUsuarioOperacion implements Operacion{
         AdministradorServicios servicios = new AdministradorServicios();
         
         try {
+            //Verifica que los campos sean correctos
             servicios.verificarDatoClave(this.clave);
             servicios.verificarDatoUsuario(this.usuario);
             servicios.verificarDatoDNI(this.dni);
             servicios.verificarDatoNombreApellido(this.nombre);
             servicios.verificarDatoNombreApellido(this.apellido);
-            servicios.verificarDatoTipoUsuario(opcionSeleccionada);
-        } catch (ServicioException ex) {
-            throw new OperacionException(ex.getMessage());
-        }
-        
-        
-        if(this.opcionSeleccionada == Administrador.class){
-            crearAdministrador();
-        }
-        /*
-        if(this.opcionSeleccionada == Medico.class){
-            //crearMedico();
-        }
-        
-        if(this.opcionSeleccionada == Paciente.class){
-            //crearPaciente();
-        }
-        */
-        return null;
-    }
-    
-    private void crearAdministrador() throws OperacionException{
-        int dniComoInt;
-        
-        try {
-            dniComoInt = Integer.parseInt(dni); // Los caracteres deben ser numeros
-            Administrador nuevoAdmin = new Administrador(dniComoInt,  this.nombre,  this.apellido, this.usuario, this.clave); // Instancia del modelo
-            AdministradorServicios.registrarAdministrador(nuevoAdmin);
+            
+            Object[] opcionesComoArray = this.opcionesUsuario.toArray();
+            
+            servicios.verificarDatoTipoUsuario(opcionesComoArray);
+
             
         } catch (ServicioException ex) {
             throw new OperacionException(ex.getMessage());
         }
+        
+        crearUsuario();
+        
+        return null;
     }
     
-    //private void crearMedico() throws OperacionException{}
-    
-    //private void crearPaciente() throws OperacionException{}
-    
+    private void crearUsuario() throws OperacionException{
+        int dniComoInt;
+        
+        try {
+            dniComoInt = Integer.parseInt(dni); // Los caracteres deben ser numeros
+            Usuario nuevoUsuario = new Usuario(dniComoInt,  this.nombre,  this.apellido, this.usuario, this.clave); // Instancia del modelo
+            AdministradorServicios.registrarUsuario(nuevoUsuario, this.opcionesUsuario);
+            
+        } catch (ServicioException ex) {
+            throw new OperacionException(ex.getMessage());
+        }
+    }   
 }

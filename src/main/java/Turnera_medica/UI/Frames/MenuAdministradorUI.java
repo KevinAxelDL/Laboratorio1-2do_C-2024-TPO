@@ -7,7 +7,6 @@ package Turnera_medica.UI.Frames;
 import Turnera_medica.Excepciones.OperacionException;
 import Turnera_medica.Modelo.Administrador;
 import Turnera_medica.UI.Botones.BotonUI;
-import Turnera_medica.UI.Incompleto.ReportesAdministradorUI;
 import Turnera_medica.UI.Mediadores.AdministradorFrames;
 import Turnera_medica.UI.Operaciones.CrearFormularioEliminarUsuarioOperacion;
 import Turnera_medica.UI.Operaciones.CrearFormularioNuevoUsuarioOperacion;

@@ -5,8 +5,10 @@
 package Turnera_medica;
 
 import Turnera_medica.UI.Paneles.PanelTablaUsuariosUI;
-import Turnera_medica.UI.Incompleto.ReportesAdministradorUI;
+import Turnera_medica.UI.Frames.ReportesAdministradorUI;
 import Turnera_medica.UI.Frames.IngresoCredencialesUI;
+import Turnera_medica.UI.Incompleto.IngresoFecha;
+import Turnera_medica.UI.Incompleto.IngresoHorasUI;
 
 
 
@@ -17,8 +19,9 @@ import Turnera_medica.UI.Frames.IngresoCredencialesUI;
 
 public class Main {
     public static void main(String[] args) {
-        ReportesAdministradorUI dev = new ReportesAdministradorUI();
-        dev.armar();
+        ReportesAdministradorUI reporte = new ReportesAdministradorUI();
+        reporte.armar();
+        
         //
         IngresoCredencialesUI credencialesUI = new IngresoCredencialesUI();
         credencialesUI.armar();

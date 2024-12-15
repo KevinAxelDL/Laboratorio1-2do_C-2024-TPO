@@ -9,6 +9,7 @@ import Turnera_medica.Modelo.Administrador;
 import Turnera_medica.UI.Botones.BotonUI;
 import Turnera_medica.UI.Mediadores.AdministradorFrames;
 import Turnera_medica.UI.Operaciones.CrearNuevoUsuarioOperacion;
+import Turnera_medica.UI.Paneles.PanelIngresoTipoUsuarioUI;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +21,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import java.lang.Class;
+import java.util.List;
 
 /**
  *
@@ -38,14 +40,10 @@ public class FormularioUsuarioUI extends UserInterface implements ActionListener
     private JTextField nombreField;
     private JTextField apellidoField;
     private JTextField dniField;
-
-    private BotonUI botonOk;
-    private JRadioButton opcion1;
-    private JRadioButton opcion2;
-    private JRadioButton opcion3;
-    private ButtonGroup grupo;
     
-    private Class<?> opcionSeleccionada;
+    private PanelIngresoTipoUsuarioUI panelTipoUsuario;
+    
+    private BotonUI botonOk;
     
     public FormularioUsuarioUI(){
         super("Crear un nuevo usuario");
@@ -62,19 +60,10 @@ public class FormularioUsuarioUI extends UserInterface implements ActionListener
         this.apellidoField = new JTextField();
         this.dniField = new JTextField();
         
+        this.panelTipoUsuario = new PanelIngresoTipoUsuarioUI();
+        
         this.botonOk = new BotonUI("OK");
-        this.opcion1 = new JRadioButton("ADMINISTRADOR");
-        this.opcion2 = new JRadioButton("MEDICO");
-        this.opcion3 = new JRadioButton("PACIENTE");
-        this.grupo = new ButtonGroup();
-        
-        // Se agrupan para asegurar una sola opcion seleccionada
-        this.grupo.add(opcion1);
-        this.grupo.add(opcion2);
-        this.grupo.add(opcion3);
-        
-        this.opcionSeleccionada = null;
-        
+ 
         super.framePrincipal.setSize(800, 350);
     }
     
@@ -86,9 +75,6 @@ public class FormularioUsuarioUI extends UserInterface implements ActionListener
         
         // Accion
         this.botonOk.addActionListener(this); // Toma como parametro la una instancia de una clase que implemente ActionListener (en este caso es esta instancia)
-        this.opcion1.addActionListener(this);
-        this.opcion2.addActionListener(this);
-        this.opcion3.addActionListener(this);
         
         // Agrega los componentes
         super.framePrincipal.add(this.usuarioLabel);
@@ -107,12 +93,8 @@ public class FormularioUsuarioUI extends UserInterface implements ActionListener
         super.framePrincipal.add(this.dniField);
         
         super.framePrincipal.add(this.tipoUsuarioLabel);
+        this.framePrincipal.add(panelTipoUsuario);
 
-        JPanel opcionesPanel = new JPanel(); 
-        opcionesPanel.add(this.opcion1);
-        opcionesPanel.add(this.opcion2);
-        opcionesPanel.add(this.opcion3);
-        super.framePrincipal.add(opcionesPanel); // Se asignan los botones a un panel y se agregan al frame
         
         super.framePrincipal.add(this.botonOk);
 
@@ -125,7 +107,9 @@ public class FormularioUsuarioUI extends UserInterface implements ActionListener
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == this.botonOk){
             // Envia formulario
-            CrearNuevoUsuarioOperacion operacion =  new CrearNuevoUsuarioOperacion(this.usuarioField.getText(), this.claveField.getText(), this.nombreField.getText(), this.apellidoField.getText(), this.dniField.getText(), this.opcionSeleccionada);
+            CrearNuevoUsuarioOperacion operacion =  new CrearNuevoUsuarioOperacion(this.usuarioField.getText(), 
+                this.claveField.getText(), this.nombreField.getText(), this.apellidoField.getText(), this.dniField.getText(), 
+                this.panelTipoUsuario.getOpcionesSeleccionadas());
             this.botonOk.setOperacion(operacion);
             try {
                 this.botonOk.activar();
@@ -133,20 +117,6 @@ public class FormularioUsuarioUI extends UserInterface implements ActionListener
             } catch (OperacionException ex) {
                 AdministradorFrames.mostrarMensaje(ex.getMessage());
             }
-        }
-        
-        if(e.getSource() == this.opcion1){// ADMINISTRADOR
-            this.opcionSeleccionada = Administrador.class;
-        }
-        
-        if(e.getSource() == this.opcion2){// MEDICO
-            //this.opcionSeleccionada = Medico.class;
-            this.opcionSeleccionada = null;
-        }
-        
-        if(e.getSource() == this.opcion3){// PACIENTE
-            //this.opcionSeleccionada = Paciente.class;
-            this.opcionSeleccionada = null;
         }
     }
 }

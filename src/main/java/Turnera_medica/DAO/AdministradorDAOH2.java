@@ -9,6 +9,7 @@ import Turnera_medica.DAO.Interfaces.AdministradorDAO;
 import Turnera_medica.Excepciones.DAOException;
 import Turnera_medica.Modelo.Administrador;
 import Turnera_medica.Modelo.Medico;
+import Turnera_medica.Modelo.Paciente;
 import Turnera_medica.Modelo.Usuario;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -25,17 +26,45 @@ import java.util.List;
 public class AdministradorDAOH2 implements AdministradorDAO {
 
     @Override
-    public void registrarAdministrador(Administrador nuevoAdmin) throws DAOException{
+    public void registrarUsuario(Usuario nuevoUsuario, Object[] seleccionTipoUsuario) throws DAOException{
+        // Operacion atomica, se crea el usuario y se asignan las funciones
+        List<String> operacionesSQL = new ArrayList();
+        Object[] operacionesSQLArray;
+        
         String operacionSQLAux1 = "SELECT ID FROM FUNCION WHERE NOMBRE = 'ADMINISTRADOR'";
+        String operacionSQLAux2 = "SELECT ID FROM FUNCION WHERE NOMBRE = 'MEDICO'";
+        String operacionSQLAux3 = "SELECT ID FROM FUNCION WHERE NOMBRE = 'PACIENTE'";
+        
         String operacionSQL1 = "INSERT INTO USUARIO (NOMBRE_USUARIO, CLAVE_USUARIO, NOMBRE, APELLIDO, DNI) "
-                + "VALUES ('"+ nuevoAdmin.getNombreUsuario() +"','"+ nuevoAdmin.getClaveUsuario() +"','"+ nuevoAdmin.getNombre() +"','"+ nuevoAdmin.getApellido() +"','"+ nuevoAdmin.getDni() +"')";
-        String operacionSQL2 = "INSERT INTO USUARIO_POR_FUNCION (NOMBRE_USUARIO, ID_FUNCION) VALUES ('"+ nuevoAdmin.getNombreUsuario() +"',("+ operacionSQLAux1 +"))";
+                + "VALUES ('"+ nuevoUsuario.getNombreUsuario() +"','"+ nuevoUsuario.getClaveUsuario() +"','"+ nuevoUsuario.getNombre() +"','"+ nuevoUsuario.getApellido() +"','"+ nuevoUsuario.getDni() +"')";
+        
+        for(int i=0; i < seleccionTipoUsuario.length; i++){
+            // Agrega a la lista las operaciones dependiendo de cuantas funciones tiene el usuario
+            if(seleccionTipoUsuario[i] == Administrador.class){
+                operacionesSQL.add("INSERT INTO USUARIO_POR_FUNCION (NOMBRE_USUARIO, ID_FUNCION) VALUES ('"+ nuevoUsuario.getNombreUsuario() +"',("+ operacionSQLAux1 +"))");
+            }
+            if(seleccionTipoUsuario[i] == Medico.class){
+                operacionesSQL.add("INSERT INTO USUARIO_POR_FUNCION (NOMBRE_USUARIO, ID_FUNCION) VALUES ('"+ nuevoUsuario.getNombreUsuario() +"',("+ operacionSQLAux2 +"))");
+            }
+            if(seleccionTipoUsuario[i] == Paciente.class){
+                operacionesSQL.add("INSERT INTO USUARIO_POR_FUNCION (NOMBRE_USUARIO, ID_FUNCION) VALUES ('"+ nuevoUsuario.getNombreUsuario() +"',("+ operacionSQLAux3 +"))");
+            }
+        }
+        
+        operacionesSQLArray = operacionesSQL.toArray();
+        
         Connection conexion = DBManager.connect(); // Se abre una conexion con la BD
         
         try {
             Statement operacion = conexion.createStatement(); 
+            
             operacion.execute(operacionSQL1); // Ejecuta la operacion, crea usuario
-            operacion.execute(operacionSQL2); // Ejecuta la operacion, asocia una funcion al usuario
+            
+            for(int i=0; i < operacionesSQLArray.length; i++){
+                // Ejecuta las operaciones, asocia funciones al usuario
+                operacion.execute((String)operacionesSQLArray[i]);
+            } 
+            
             conexion.commit(); // Aplica los cambios an la BD
 	} catch (SQLException e) {
             try {
@@ -59,7 +88,7 @@ public class AdministradorDAOH2 implements AdministradorDAO {
     }
 
     @Override
-    public int eliminarAdministrador(String nUsuario) throws DAOException{
+    public int eliminarUsuario(String nUsuario) throws DAOException{
         String operacionSQL1 = "DELETE FROM USUARIO_POR_FUNCION WHERE NOMBRE_USUARIO = '"+ nUsuario +"';";
         String operacionSQL2 = "DELETE FROM USUARIO WHERE NOMBRE_USUARIO = '"+ nUsuario +"';";
         Connection conexion = DBManager.connect(); // Se abre una conexion con la BD
@@ -151,5 +180,10 @@ public class AdministradorDAOH2 implements AdministradorDAO {
         
         
         return resultado;
+    }
+
+    @Override
+    public void asignarFuncionAdministrador(Usuario usuario) throws DAOException {
+        
     }
 }

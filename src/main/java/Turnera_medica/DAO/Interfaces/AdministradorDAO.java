@@ -16,15 +16,16 @@ import java.util.List;
 public interface AdministradorDAO{
     
     // Dar de alta registro
-    public void registrarAdministrador(Administrador nuevoAdmin) throws DAOException;
+    public void registrarUsuario(Usuario nuevoUsuario, Object[] seleccionTipoUsuario) throws DAOException;
     
     // Dar de baja registro
-    public int eliminarAdministrador(String nUsuario)throws DAOException;;
+    public int eliminarUsuario(String nUsuario)throws DAOException;;
     
     // Consultas
     public List<Usuario> listarUsuariosConFuncion() throws DAOException;
     
     // Modificar registro
+    public void asignarFuncionAdministrador(Usuario usuario) throws DAOException;
     
     
 }

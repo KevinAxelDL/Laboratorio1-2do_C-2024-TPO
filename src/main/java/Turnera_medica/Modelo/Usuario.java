@@ -8,7 +8,7 @@ package Turnera_medica.Modelo;
  *
  * @author KevinDL
  */
-public abstract class Usuario {
+public class Usuario {
     // Para que las subclases puedan acceder a sus atributos la visibilidad se definira como "protected"
     protected int dni;
     protected String nombre;
@@ -49,5 +49,4 @@ public abstract class Usuario {
         return claveUsuario;
     }
     
-    public abstract String getNombreClase();
 }

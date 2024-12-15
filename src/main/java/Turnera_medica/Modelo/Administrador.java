@@ -16,17 +16,14 @@ public class Administrador extends Usuario{
         super( dni,  nombre,  apellido,  nombreUsuario,  claveUsuario);
     }
     
+    @Override
     public String getNombreUsuario() {
         return super.nombreUsuario;
     }
     
+    @Override
     public String getClaveUsuario() {
         return super.claveUsuario;
-    }
-
-    @Override
-    public String getNombreClase() {
-        return "ADMINISTRADOR";
     }
     
 }

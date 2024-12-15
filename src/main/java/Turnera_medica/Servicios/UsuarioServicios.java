@@ -25,7 +25,7 @@ public class UsuarioServicios {
             throw new ServicioException(ex.getMessage());
         }
         return usuario;
-    }
+    }  
     
     // Verificacion de datos
     public void verificarDatoClave (String dato) throws ServicioException{
@@ -59,10 +59,19 @@ public class UsuarioServicios {
         }
     };
     
-    public void verificarDatoTipoUsuario(Class<?> dato) throws ServicioException{
-        if(dato == null){
-            throw new ServicioException("INGRESE UN TIPO DE USUARIO VALIDO!");
+    public void verificarDatoTipoUsuario(Object[] datos) throws ServicioException{
+        boolean datosNoValidos = true;
+        for(int i = 0; i < datos.length; i++){
+            if(datos[i] != null){
+                // Con que exista un solo tipo de dato del modelo, es opcion valida
+                datosNoValidos = false;
+            }
         }
+        
+        if(datosNoValidos == true){
+            throw new ServicioException("INGRESE UN TIPO DE USUARIO VALIDO!");
+        } 
+        
     };
 
 }

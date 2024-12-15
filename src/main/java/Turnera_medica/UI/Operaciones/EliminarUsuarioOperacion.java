@@ -24,7 +24,7 @@ public class EliminarUsuarioOperacion implements Operacion{
     public Object realizar() throws OperacionException {
         int resultado;
         try {
-            resultado = AdministradorServicios.eliminarAdministrador(this.usuario);
+            resultado = AdministradorServicios.eliminarUsuario(this.usuario);
             AdministradorFrames.mostrarMensaje("Operacion exitosa, registros afectados: "+ resultado);
         } catch (ServicioException ex) {
             throw new OperacionException(ex.getMessage());

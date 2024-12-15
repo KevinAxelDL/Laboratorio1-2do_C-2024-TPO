@@ -12,9 +12,4 @@ public class Medico extends Usuario{
     public Medico(int dni, String nombre, String apellido, String nombreUsuario, String claveUsuario){
         super( dni,  nombre,  apellido,  nombreUsuario,  claveUsuario);
     }
-
-    @Override
-    public String getNombreClase() {
-        return "MEDICO";
-    }
 }

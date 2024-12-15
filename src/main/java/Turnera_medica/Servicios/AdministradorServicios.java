@@ -8,6 +8,7 @@ import Turnera_medica.DAO.AdministradorDAOH2;
 import Turnera_medica.Excepciones.DAOException;
 import Turnera_medica.Excepciones.ServicioException;
 import Turnera_medica.Modelo.Administrador;
+import Turnera_medica.Modelo.Medico;
 import Turnera_medica.Modelo.Usuario;
 import java.util.List;
 
@@ -19,21 +20,22 @@ import java.util.List;
 public class AdministradorServicios extends UsuarioServicios{
     
     // Metodos de clase
-    public static void registrarAdministrador(Administrador nuevoAdmin) throws ServicioException{
+    public static void registrarUsuario(Usuario nuevoUsuario, List<Class<?>> opcionesUsuario) throws ServicioException{
         AdministradorDAOH2 adminDAOH2 = new AdministradorDAOH2();
+        Object[] arrayOpcionesUsuario = opcionesUsuario.toArray();
         
         try {
-            adminDAOH2.registrarAdministrador(nuevoAdmin);
+            adminDAOH2.registrarUsuario(nuevoUsuario, arrayOpcionesUsuario); // Se crea el usuario en la BD
         } catch (DAOException ex) {
             throw new ServicioException(ex.getMessage());
         }
     }
     
-    public static int eliminarAdministrador(String nUsuario) throws ServicioException{
+    public static int eliminarUsuario(String nUsuario) throws ServicioException{
         AdministradorDAOH2 adminDAOH2 = new AdministradorDAOH2();
         int resultado;
         try {
-            resultado = adminDAOH2.eliminarAdministrador(nUsuario);
+            resultado = adminDAOH2.eliminarUsuario(nUsuario);
         } catch (DAOException ex) {
             throw new ServicioException(ex.getMessage());
         }
@@ -62,11 +64,6 @@ public class AdministradorServicios extends UsuarioServicios{
     @Override
     public void verificarDatoNombreApellido(String dato) throws ServicioException{
         super.verificarDatoNombreApellido(dato);
-    }
-
-    @Override
-    public void verificarDatoUsuario(String dato) throws ServicioException {
-        super.verificarDatoUsuario(dato);
     }
 
     @Override

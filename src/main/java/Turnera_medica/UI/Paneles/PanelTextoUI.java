@@ -5,16 +5,19 @@
 package Turnera_medica.UI.Paneles;
 
 import javax.swing.JPanel;
-import javax.swing.JTable;
 
 /**
  *
  * @author KevinDL
  */
-public abstract class PanelTabla extends JPanel{
-    protected JTable tabla;
+public class PanelTextoUI extends JPanel{
+    private String texto;
     
-    public abstract void actualizar();
+    public PanelTextoUI(String texto){
+        this.texto = texto;
+    }
     
-    protected abstract void obtenerDatos();
+    public String getTexto(){
+        return this.texto;
+    }
 }

@@ -18,7 +18,7 @@ import javax.swing.JTable;
  *
  * @author KevinDL
  */
-public class PanelTablaUsuariosUI extends PanelTabla{
+public class PanelTablaUsuariosUI extends PanelTablaUI{
     private List<Usuario> usuarios;
     private UsuarioTableModel modelo;
     
