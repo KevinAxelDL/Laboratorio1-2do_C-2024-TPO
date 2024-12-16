@@ -5,7 +5,6 @@
 package Turnera_medica.UI.Frames;
 
 import Turnera_medica.Excepciones.OperacionException;
-import Turnera_medica.Modelo.Administrador;
 import Turnera_medica.UI.Botones.BotonUI;
 import Turnera_medica.UI.Mediadores.AdministradorFrames;
 import Turnera_medica.UI.Operaciones.CrearNuevoUsuarioOperacion;
@@ -13,15 +12,9 @@ import Turnera_medica.UI.Paneles.PanelIngresoTipoUsuarioUI;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.ButtonGroup;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import java.lang.Class;
-import java.util.List;
 
 /**
  *
@@ -64,43 +57,43 @@ public class FormularioUsuarioUI extends UserInterface implements ActionListener
         
         this.botonOk = new BotonUI("OK");
  
-        super.framePrincipal.setSize(800, 350);
+        this.setSize(800, 350);
     }
     
     @Override
     public void armar() {
         
         // Se define el comportamiento del frame 
-        super.framePrincipal.setLayout(new GridLayout(7, 2)); // 7 filas, 2 columnas
+        this.setLayout(new GridLayout(7, 2)); // 7 filas, 2 columnas
         
         // Accion
         this.botonOk.addActionListener(this); // Toma como parametro la una instancia de una clase que implemente ActionListener (en este caso es esta instancia)
         
         // Agrega los componentes
-        super.framePrincipal.add(this.usuarioLabel);
-        super.framePrincipal.add(this.usuarioField);
+        this.add(this.usuarioLabel);
+        this.add(this.usuarioField);
         
-        super.framePrincipal.add(this.claveLabel);
-        super.framePrincipal.add(this.claveField);
+        this.add(this.claveLabel);
+        this.add(this.claveField);
         
-        super.framePrincipal.add(this.nombreLabel);
-        super.framePrincipal.add(this.nombreField);
+        this.add(this.nombreLabel);
+        this.add(this.nombreField);
         
-        super.framePrincipal.add(this.apellidoLabel);
-        super.framePrincipal.add(this.apellidoField);
+        this.add(this.apellidoLabel);
+        this.add(this.apellidoField);
         
-        super.framePrincipal.add(this.dniLabel);
-        super.framePrincipal.add(this.dniField);
+        this.add(this.dniLabel);
+        this.add(this.dniField);
         
-        super.framePrincipal.add(this.tipoUsuarioLabel);
-        this.framePrincipal.add(panelTipoUsuario);
+        this.add(this.tipoUsuarioLabel);
+        this.add(panelTipoUsuario);
 
         
-        super.framePrincipal.add(this.botonOk);
+        this.add(this.botonOk);
 
         // Hace visible el frame
         super.centrar();
-        super.framePrincipal.setVisible(true);
+        this.setVisible(true);
     }
     
     @Override

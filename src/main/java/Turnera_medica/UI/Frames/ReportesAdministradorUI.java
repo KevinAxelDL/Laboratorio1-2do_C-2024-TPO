@@ -13,7 +13,6 @@ import Turnera_medica.UI.Mediadores.AdministradorFrames;
 import Turnera_medica.UI.Paneles.PanelIngresoFechaUI;
 import Turnera_medica.UI.Paneles.PanelIngresoHoraUI;
 import Turnera_medica.UI.Paneles.PanelIngresoStringUI;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,8 +37,8 @@ public class ReportesAdministradorUI extends UserInterface implements ActionList
     
     public ReportesAdministradorUI(){
         super("Reportes");
-        super.framePrincipal.setLayout(new GridLayout(1, 2));
-        super.framePrincipal.setSize(1500,500);
+        this.setLayout(new GridLayout(1, 2));
+        this.setSize(1500,900);
         
         this.panelTablaReporteUsuarios = new PanelTablaUsuariosUI();    
            
@@ -93,11 +92,11 @@ public class ReportesAdministradorUI extends UserInterface implements ActionList
         this.panelOpciones.add(this.botonReporteTurnos);
         
         //Frame principal
-        super.framePrincipal.add(this.panelTablaReporteUsuarios);
-        super.framePrincipal.add(this.panelOpciones);
+        this.add(this.panelTablaReporteUsuarios);
+        this.add(this.panelOpciones);
         
         super.centrar();
-        super.framePrincipal.setVisible(true);
+        this.setVisible(true);
     }
 
     @Override

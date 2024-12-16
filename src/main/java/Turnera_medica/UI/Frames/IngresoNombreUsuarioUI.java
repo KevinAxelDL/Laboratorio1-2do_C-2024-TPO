@@ -11,7 +11,6 @@ import Turnera_medica.UI.Operaciones.EliminarUsuarioOperacion;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
@@ -29,27 +28,27 @@ public class IngresoNombreUsuarioUI extends UserInterface implements ActionListe
         this.usuarioLabel = new JLabel("Usuario:");
         this.usuarioField = new JTextField();
         this.boton = new BotonUI("OK");
-        this.framePrincipal.setSize(400, 100);
+        this.setSize(400, 100);
     }
     
     @Override
      public void armar() {
         
         // Se define el comportamiento del frame 
-        super.framePrincipal.setLayout(new GridLayout(2, 2)); 
+        this.setLayout(new GridLayout(2, 2)); 
         
         // Accion
         this.boton.addActionListener(this); 
 
         
         // Agrega los componentes
-        super.framePrincipal.add(this.usuarioLabel);
-        super.framePrincipal.add(this.usuarioField);
-        super.framePrincipal.add(this.boton);
+        this.add(this.usuarioLabel);
+        this.add(this.usuarioField);
+        this.add(this.boton);
 
         // Hace visible el frame
         super.centrar();
-        super.framePrincipal.setVisible(true);
+        this.setVisible(true);
     }
 
     @Override

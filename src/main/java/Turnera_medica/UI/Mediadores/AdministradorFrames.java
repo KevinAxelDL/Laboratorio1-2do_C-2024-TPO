@@ -5,6 +5,8 @@
 package Turnera_medica.UI.Mediadores;
 
 import Turnera_medica.Modelo.Administrador;
+import Turnera_medica.Modelo.Medico;
+import Turnera_medica.Modelo.Paciente;
 import Turnera_medica.Modelo.Usuario;
 import Turnera_medica.UI.Frames.FormularioUsuarioUI;
 import Turnera_medica.UI.Frames.IngresoCredencialesUI;
@@ -25,13 +27,15 @@ public abstract class AdministradorFrames {
             MenuAdministradorUI menu = new MenuAdministradorUI((Administrador) usuario);
             menu.armar();
         }
-        
-        /*
+       
         if(usuario instanceof Medico){
-            MenuMedicoUI menu = new MenuMedicoUI((Medico) usuario);
-            menu.armar();
+            //IMPLEMENTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
         }
-        */
+        
+        if(usuario instanceof Paciente){
+            //IMPLEMENTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+        }
+        
     }
     
     public static void mostrarIngresoCredenciales(){
@@ -63,9 +67,5 @@ public abstract class AdministradorFrames {
         }
         ultimoMensaje = mensaje;
         mensaje.armar();
-    }
-    
-    public static void mostrarTablaUsuarios(String texto){
-        
     }
 }

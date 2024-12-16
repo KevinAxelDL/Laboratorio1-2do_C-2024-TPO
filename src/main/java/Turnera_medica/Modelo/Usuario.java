@@ -49,4 +49,7 @@ public class Usuario {
         return claveUsuario;
     }
     
+    public String getTipoUsuario(){
+        return "USUARIO GENERICO";
+    }
 }

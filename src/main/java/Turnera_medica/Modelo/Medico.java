@@ -9,7 +9,23 @@ package Turnera_medica.Modelo;
  * @author KevinDL
  */
 public class Medico extends Usuario{
+    public static double precioConsultaDefault = 1000;
+    private double precioConsulta; 
+    
     public Medico(int dni, String nombre, String apellido, String nombreUsuario, String claveUsuario){
         super( dni,  nombre,  apellido,  nombreUsuario,  claveUsuario);
+        this.precioConsulta = Medico.precioConsultaDefault;
+    }
+    
+    public String getTipoUsuario(){
+        return "MEDICO";
+    }
+    
+    public void actualizarPrecioConsulta(double precio){
+        this.precioConsulta = precio;
+    }
+    
+    public double getPrecioConsulta(){
+        return this.precioConsulta;
     }
 }

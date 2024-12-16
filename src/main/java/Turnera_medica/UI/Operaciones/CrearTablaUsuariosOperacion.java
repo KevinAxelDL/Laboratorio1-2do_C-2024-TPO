@@ -8,6 +8,6 @@ package Turnera_medica.UI.Operaciones;
  *
  * @author KevinDL
  */
-public class CrearTablaUsuarios {
+public class CrearTablaUsuariosOperacion {
     
 }

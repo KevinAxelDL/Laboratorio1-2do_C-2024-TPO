@@ -14,5 +14,5 @@ import Turnera_medica.Modelo.Usuario;
 public interface UsuarioDAO {
     
     // Ingreso
-    public Usuario ingresarComoUsuario(String nombreUsuarioIn, String claveUsuarioIN) throws DAOException;
+    public Usuario ingresarComoUsuario(String nombreUsuarioIn, String claveUsuarioIN, Class<?> tipoClase) throws DAOException;
 }

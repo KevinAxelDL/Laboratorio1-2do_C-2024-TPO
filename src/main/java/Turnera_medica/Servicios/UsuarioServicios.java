@@ -16,11 +16,11 @@ import Turnera_medica.Modelo.Usuario;
 public class UsuarioServicios {
     
     // Metodos de clase
-    public static Usuario ingresarComoUsuario(String nombreUsuario, String claveUsuario) throws ServicioException{
+    public static Usuario ingresarComoUsuario(String nombreUsuario, String claveUsuario, Class<?> tipoClase) throws ServicioException{
         UsuarioDAOH2 userH2 = new UsuarioDAOH2();
         Usuario usuario = null;
         try {
-            usuario = userH2.ingresarComoUsuario(nombreUsuario, claveUsuario);
+            usuario = userH2.ingresarComoUsuario(nombreUsuario, claveUsuario, tipoClase);
         } catch (DAOException ex) {
             throw new ServicioException(ex.getMessage());
         }

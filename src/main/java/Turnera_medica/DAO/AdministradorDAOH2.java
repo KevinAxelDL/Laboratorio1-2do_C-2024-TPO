@@ -28,6 +28,7 @@ public class AdministradorDAOH2 implements AdministradorDAO {
     @Override
     public void registrarUsuario(Usuario nuevoUsuario, Object[] seleccionTipoUsuario) throws DAOException{
         // Operacion atomica, se crea el usuario y se asignan las funciones
+        // Los usuarios son 'Usuarios genericos' del modelo en esta instancia
         List<String> operacionesSQL = new ArrayList();
         Object[] operacionesSQLArray;
         
@@ -45,6 +46,7 @@ public class AdministradorDAOH2 implements AdministradorDAO {
             }
             if(seleccionTipoUsuario[i] == Medico.class){
                 operacionesSQL.add("INSERT INTO USUARIO_POR_FUNCION (NOMBRE_USUARIO, ID_FUNCION) VALUES ('"+ nuevoUsuario.getNombreUsuario() +"',("+ operacionSQLAux2 +"))");
+                operacionesSQL.add("INSERT INTO PRECIOS_POR_MEDICO (USUARIO_MEDICO, PRECIO_CONSULTA) VALUES ('"+ nuevoUsuario.getNombreUsuario()+"',"+ Medico.precioConsultaDefault +")");
             }
             if(seleccionTipoUsuario[i] == Paciente.class){
                 operacionesSQL.add("INSERT INTO USUARIO_POR_FUNCION (NOMBRE_USUARIO, ID_FUNCION) VALUES ('"+ nuevoUsuario.getNombreUsuario() +"',("+ operacionSQLAux3 +"))");
@@ -119,9 +121,11 @@ public class AdministradorDAOH2 implements AdministradorDAO {
     
     @Override
     public List<Usuario> listarUsuariosConFuncion() throws DAOException {
-        String operacionSQL1 = "SELECT DISTINCT u.NOMBRE, APELLIDO, DNI, u.NOMBRE_USUARIO, CLAVE_USUARIO, f.NOMBRE AS NOMBRE_FUNCION "
-                + "FROM USUARIO u JOIN USUARIO_POR_FUNCION uf JOIN FUNCION f "
-                + "WHERE ID_FUNCION = ID";
+        String operacionSQL1 = "SELECT DISTINCT u.NOMBRE, APELLIDO, DNI, u.NOMBRE_USUARIO, CLAVE_USUARIO, f.NOMBRE AS NOMBRE_FUNCION \n" +
+            "FROM USUARIO u \n" +
+            "NATURAL JOIN USUARIO_POR_FUNCION uf JOIN FUNCION f \n" +
+            "WHERE ID_FUNCION = ID\n" +
+            "ORDER BY NOMBRE_USUARIO ASC";
         Connection conexion = DBManager.connect(); // Se abre una conexion con la BD
         ResultSet rs = null;
         List<Usuario> resultado = new ArrayList();
@@ -158,7 +162,7 @@ public class AdministradorDAOH2 implements AdministradorDAO {
                             usuario = new Administrador( dni, nombre, apellido, nombreUsuario, claveUsuario);
                             break;
                         case "PACIENTE":
-                            usuario = new Administrador( dni, nombre, apellido, nombreUsuario, claveUsuario);
+                            usuario = new Paciente( dni, nombre, apellido, nombreUsuario, claveUsuario);
                             break;
                     }
                     resultado.add(usuario);

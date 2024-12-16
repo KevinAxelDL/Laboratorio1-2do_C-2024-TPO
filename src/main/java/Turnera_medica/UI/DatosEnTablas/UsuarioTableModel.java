@@ -44,7 +44,7 @@ public class UsuarioTableModel extends AbstractTableModel{
             case 2: return usuario.getDni();
             case 3: return usuario.getNombreUsuario();
             case 4: return usuario.getClaveUsuario();
-            case 5: return usuario.getClass().toString();
+            case 5: return usuario.getTipoUsuario();
             default: return null;
         }
     }

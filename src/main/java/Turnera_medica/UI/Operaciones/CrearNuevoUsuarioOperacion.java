@@ -36,7 +36,6 @@ public class CrearNuevoUsuarioOperacion implements Operacion{
     @Override
     public Object realizar() throws OperacionException {
         // Accion del boton
-        //NOTA: DE MOMENTO SOLO SE PUEDE CREAR UN ADMINISTRADOR, UN SWITCH A FUTURO NO ES IDEAL PARA DETERMINAR QUE USARIO SE CREA
         AdministradorServicios servicios = new AdministradorServicios();
         
         try {

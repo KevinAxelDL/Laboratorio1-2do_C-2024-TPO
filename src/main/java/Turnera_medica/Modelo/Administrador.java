@@ -26,4 +26,8 @@ public class Administrador extends Usuario{
         return super.claveUsuario;
     }
     
+    public String getTipoUsuario(){
+        return "ADMINISTRADOR";
+    }
+    
 }

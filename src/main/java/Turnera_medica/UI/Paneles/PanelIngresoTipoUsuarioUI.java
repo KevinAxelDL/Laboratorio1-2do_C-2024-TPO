@@ -73,6 +73,7 @@ public class PanelIngresoTipoUsuarioUI extends JPanel implements ActionListener{
     }
 
     public List<Class<?>> getOpcionesSeleccionadas() {
+        this.opcionesSeleccionadas.clear();// Elimina todos los elementos de la seleccion antetior
         this.opcionesSeleccionadas.add(this.administradorSeleccionado);
         this.opcionesSeleccionadas.add(this.medicoSeleccionado);
         this.opcionesSeleccionadas.add(this.pacienteSeleccionado);

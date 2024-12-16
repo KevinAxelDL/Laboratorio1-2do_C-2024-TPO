@@ -5,7 +5,6 @@
 package Turnera_medica.UI.Frames;
 
 import java.awt.GridLayout;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
@@ -24,15 +23,15 @@ public class MensajeUI extends UserInterface{
     @Override
     public void armar() {
         // Se define el comportamiento del frame 
-        framePrincipal.setSize(400, 150);
-        framePrincipal.setLayout(new GridLayout(1, 1)); // 1 fila, 1 columna
+        this.setSize(400, 150);
+        this.setLayout(new GridLayout(1, 1)); // 1 fila, 1 columna
         
         // Agrega los componentes
-        framePrincipal.add(mensajeLabel);
+        this.add(mensajeLabel);
 
         // Hace visible el frame
         this.mensajeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         this.centrar();
-        framePrincipal.setVisible(true);
+        this.setVisible(true);
     }
 }

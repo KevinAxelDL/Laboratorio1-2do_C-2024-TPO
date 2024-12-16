@@ -10,22 +10,21 @@ import javax.swing.JFrame;
  *
  * @author KevinDL
  */
-public abstract class UserInterface {
-    protected JFrame framePrincipal;
+public abstract class UserInterface extends JFrame{
     
     public UserInterface(String titulo){
-        this.framePrincipal = new JFrame(titulo);
-        this.framePrincipal.setResizable(true);
+        super(titulo);
+        this.setResizable(true);
     }
     
     public void cerrar(){
-        this.framePrincipal.dispose();
+        this.dispose();
     };
     
     public abstract void armar();
     
     protected void centrar(){
-        // Centra en el medio a la pantalla un frame
-        this.framePrincipal.setLocationRelativeTo(null);
+        // Centra en el medio de la pantalla un frame
+        this.setLocationRelativeTo(null);
     }
 }

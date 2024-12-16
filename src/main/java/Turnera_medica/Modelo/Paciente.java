@@ -12,4 +12,8 @@ public class Paciente extends Usuario{
     public Paciente(int dni, String nombre, String apellido, String nombreUsuario, String claveUsuario){
         super( dni,  nombre,  apellido,  nombreUsuario,  claveUsuario);
     }
+    
+    public String getTipoUsuario(){
+        return "PACIENTE";
+    }
 }

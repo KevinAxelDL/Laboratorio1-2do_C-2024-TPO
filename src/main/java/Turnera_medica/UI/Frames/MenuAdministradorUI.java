@@ -29,21 +29,19 @@ public class MenuAdministradorUI extends MenuUI implements ActionListener{
     private BotonUI botonModificarUsuario;
     
     public MenuAdministradorUI(Administrador administrador){
-        super("Menu administrador");
-        super.infoLabel = new JLabel("Usuario activo: "+ administrador.getNombreUsuario());
+        super("Menu administrador", administrador);
         this.botonCrearUsuario = new BotonUI("Crear usuario");
         this.botonEliminarUsuario = new BotonUI("Eliminar usuario");
         this.botonVerUsuarios = new BotonUI("Reportes");
         this.botonModificarUsuario = new BotonUI("Modificar usuario");
-        this.infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
         super.configurarPorDefault();
     }
     
     public void armar() {
         
         // Se define el comportamiento del frame 
-        super.framePrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Termina el programa una vez cerrado el frame
-        super.framePrincipal.setLayout(new GridLayout(5, 1));
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Termina el programa una vez cerrado el frame
+        this.setLayout(new GridLayout(5, 1));
         
         // Accion
         this.botonCrearUsuario.addActionListener(this);
@@ -52,15 +50,15 @@ public class MenuAdministradorUI extends MenuUI implements ActionListener{
         this.botonVerUsuarios.addActionListener(this);
 
         // Agrega los componentes
-        super.framePrincipal.add(infoLabel);
-        super.framePrincipal.add(botonCrearUsuario);
-        super.framePrincipal.add(botonEliminarUsuario);
-        super.framePrincipal.add(botonModificarUsuario);
-        super.framePrincipal.add(botonVerUsuarios);
+        this.add(super.panelInfoUsuario);
+        this.add(botonCrearUsuario);
+        this.add(botonEliminarUsuario);
+        this.add(botonModificarUsuario);
+        this.add(botonVerUsuarios);
 
         // Hace visible el frame
         super.centrar();
-        super.framePrincipal.setVisible(true);
+        this.setVisible(true);
     }
     
     private void crearFormularioModificarUsuario(){
