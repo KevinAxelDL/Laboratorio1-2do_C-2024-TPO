@@ -11,7 +11,7 @@ package Turnera_medica.UI.Frames;
 import Turnera_medica.Excepciones.OperacionException;
 import Turnera_medica.UI.Botones.BotonUI;
 import Turnera_medica.UI.Mediadores.AdministradorFrames;
-import Turnera_medica.UI.Operaciones.IngresoCredencialesOperacion;
+import Turnera_medica.UI.Mediadores.AdministradorOperaciones;
 import Turnera_medica.UI.Paneles.PanelIngresoTipoUsuarioSimpleUI;
 import javax.swing.*;
 import java.awt.*;
@@ -60,7 +60,15 @@ public class IngresoCredencialesUI extends UserInterface implements ActionListen
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == this.boton){
-            // Se preciono el boton
+            try {
+                // Se preciono el boton
+                AdministradorOperaciones.ingresarCredenciales(this.usuarioField.getText(), this.claveField.getText(), this.panelTipoUsuario.getTipoSeleccionado());
+                this.dispose();
+            } catch (OperacionException ex) {
+                AdministradorFrames.mostrarMensaje(ex.getMessage());
+            }
+            
+            /*
             this.boton.setOperacion(new IngresoCredencialesOperacion(this.usuarioField.getText(), this.claveField.getText(), this.panelTipoUsuario.getTipoSeleccionado()));
             try {
                 this.boton.activar();
@@ -68,6 +76,7 @@ public class IngresoCredencialesUI extends UserInterface implements ActionListen
             } catch (OperacionException ex) {
                 AdministradorFrames.mostrarMensaje(ex.getMessage());
             }
+            */
         }
     }
 }

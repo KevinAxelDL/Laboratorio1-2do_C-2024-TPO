@@ -7,7 +7,7 @@ package Turnera_medica.UI.Frames;
 import Turnera_medica.Excepciones.OperacionException;
 import Turnera_medica.UI.Botones.BotonUI;
 import Turnera_medica.UI.Mediadores.AdministradorFrames;
-import Turnera_medica.UI.Operaciones.EliminarUsuarioOperacion;
+import Turnera_medica.UI.Mediadores.AdministradorOperaciones;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -53,8 +53,17 @@ public class IngresoNombreUsuarioUI extends UserInterface implements ActionListe
 
     @Override
     public void actionPerformed(ActionEvent e){
+        int resultado;
         if(e.getSource() == this.boton){
-            // Se preciono el boton
+            try {
+                // Se preciono el boton
+                resultado = AdministradorOperaciones.eliminarUsuario(this.usuarioField.getText());
+                AdministradorFrames.mostrarMensaje("Operacion exitosa, registros afectados: "+ resultado);
+            } catch (OperacionException ex) {
+                AdministradorFrames.mostrarMensaje(ex.getMessage());
+            }
+            
+            /*
             EliminarUsuarioOperacion operacion = new EliminarUsuarioOperacion(usuarioField.getText());
             this.boton.setOperacion(operacion);
             try {
@@ -62,6 +71,7 @@ public class IngresoNombreUsuarioUI extends UserInterface implements ActionListe
             } catch (OperacionException ex) {
                 AdministradorFrames.mostrarMensaje(ex.getMessage());
             }
+            */
         }
     }
 }

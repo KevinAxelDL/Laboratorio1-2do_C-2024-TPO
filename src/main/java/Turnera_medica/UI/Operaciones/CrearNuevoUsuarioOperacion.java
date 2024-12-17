@@ -6,7 +6,6 @@ package Turnera_medica.UI.Operaciones;
 
 import Turnera_medica.Excepciones.OperacionException;
 import Turnera_medica.Excepciones.ServicioException;
-import Turnera_medica.Modelo.Administrador;
 import Turnera_medica.Modelo.Usuario;
 import Turnera_medica.Servicios.AdministradorServicios;
 import java.util.List;
@@ -15,6 +14,8 @@ import java.util.List;
  *
  * @author KevinDL
  */
+
+/*
 public class CrearNuevoUsuarioOperacion implements Operacion{
     private String usuario;
     private String clave; 

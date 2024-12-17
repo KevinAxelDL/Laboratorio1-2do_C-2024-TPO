@@ -11,6 +11,8 @@ import Turnera_medica.UI.Paneles.PanelTablaUsuariosUI;
  *
  * @author KevinDL
  */
+
+/*
 public class ActualizarPanelTablaUsuariosOperacion implements Operacion{
     private PanelTablaUsuariosUI panel;
     

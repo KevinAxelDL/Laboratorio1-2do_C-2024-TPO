@@ -4,14 +4,7 @@
  */
 package Turnera_medica;
 
-import Turnera_medica.Modelo.Administrador;
-import Turnera_medica.UI.Paneles.PanelTablaUsuariosUI;
-import Turnera_medica.UI.Frames.ReportesAdministradorUI;
 import Turnera_medica.UI.Frames.IngresoCredencialesUI;
-import Turnera_medica.UI.Incompleto.IngresoFecha;
-import Turnera_medica.UI.Incompleto.IngresoHorasUI;
-
-
 
 /**
  *

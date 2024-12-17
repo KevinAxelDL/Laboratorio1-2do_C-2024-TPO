@@ -18,33 +18,23 @@ import javax.swing.JTable;
  *
  * @author KevinDL
  */
-public class PanelTablaUsuariosUI extends PanelTablaUI{
-    private List<Usuario> usuarios;
-    private UsuarioTableModel modelo;
+public class PanelTablaUsuariosUI extends PanelTablaUI<Usuario>{
+    //private List<Usuario> usuarios;
+    //private UsuarioTableModel modelo;
     
     public PanelTablaUsuariosUI(){
         // Crea JTable y TableModel
-        obtenerDatos();
-        this.setLayout(new BorderLayout());// Permite que los contenidos se expandan hasta el borde del panel
-        this.modelo = new UsuarioTableModel(this.usuarios);
+        super();
+        this.modelo = new UsuarioTableModel(this.datos);
         this.tabla = new JTable(modelo);
         this.add(this.tabla);
         this.add(new JScrollPane(tabla));
-    }
-    
-    @Override
-    public void actualizar(){
-        obtenerDatos();
-
-        // Actualiza el modelo
-        this.modelo.setUsuarios(this.usuarios); 
-        this.modelo.fireTableDataChanged();
     }
 
     @Override
     protected void obtenerDatos() {
         try {
-            this.usuarios = AdministradorServicios.listarUsuariosConFuncion(); // Retorna los usuarios en una lista
+            this.datos = AdministradorServicios.listarUsuariosConFuncion(); // Retorna los usuarios en una lista
         } catch (ServicioException ex) {
             AdministradorFrames.mostrarMensaje(ex.getMessage());
         }

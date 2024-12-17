@@ -6,6 +6,7 @@ package Turnera_medica.UI.Frames;
 
 import Turnera_medica.Modelo.Usuario;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -13,7 +14,7 @@ import javax.swing.JPanel;
  *
  * @author KevinDL
  */
-public abstract class MenuUI extends UserInterface{
+public abstract class MenuUI extends UserInterface implements ActionListener{
     protected JPanel panelInfoUsuario;
     
     public MenuUI(String texto, Usuario usuario){
@@ -24,6 +25,11 @@ public abstract class MenuUI extends UserInterface{
         
         this.panelInfoUsuario.add(new JLabel("Usuario activo: "+ usuario.getNombreUsuario()));
         this.panelInfoUsuario.add(new JLabel("Permisos actuales: "+ usuario.getTipoUsuario()));
+    }
+    
+    @Override
+    public void armar(){
+        this.add(this.panelInfoUsuario);
     }
     
     protected void configurarPorDefault(){

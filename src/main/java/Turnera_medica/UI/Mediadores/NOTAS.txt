@@ -1,0 +1,4 @@
++   AdministradorOperaciones consitene todas las operaciones que necesita la UI
+para interactuar con la BD
++   Las operaciones podrian implementarse en el Modelo si hay metodos que les pueden 
+corresponder a cada clase (como alternativa).

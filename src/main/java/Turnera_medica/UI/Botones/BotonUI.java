@@ -4,7 +4,6 @@
  */
 package Turnera_medica.UI.Botones;
 
-import Turnera_medica.Excepciones.OperacionException;
 import Turnera_medica.UI.Operaciones.Operacion;
 import javax.swing.JButton;
 
@@ -20,11 +19,13 @@ public class BotonUI extends JButton{
         super.setText(texto);
     }
     
+    /*
     public BotonUI(String texto, Operacion operacion){
         super.setText(texto);
     }
-    
+    */
    // Operaciones
+    /*
     public void setOperacion(Operacion operacion){
         this.operacion = operacion;
     }
@@ -32,4 +33,5 @@ public class BotonUI extends JButton{
     public void activar() throws OperacionException{
         this.operacion.realizar();
     }
+    */
 }

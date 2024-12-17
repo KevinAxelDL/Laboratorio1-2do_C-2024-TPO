@@ -7,7 +7,7 @@ package Turnera_medica.UI.Frames;
 import Turnera_medica.Excepciones.OperacionException;
 import Turnera_medica.UI.Botones.BotonUI;
 import Turnera_medica.UI.Mediadores.AdministradorFrames;
-import Turnera_medica.UI.Operaciones.CrearNuevoUsuarioOperacion;
+import Turnera_medica.UI.Mediadores.AdministradorOperaciones;
 import Turnera_medica.UI.Paneles.PanelIngresoTipoUsuarioUI;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -99,17 +99,28 @@ public class FormularioUsuarioUI extends UserInterface implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == this.botonOk){
-            // Envia formulario
-            CrearNuevoUsuarioOperacion operacion =  new CrearNuevoUsuarioOperacion(this.usuarioField.getText(), 
-                this.claveField.getText(), this.nombreField.getText(), this.apellidoField.getText(), this.dniField.getText(), 
-                this.panelTipoUsuario.getOpcionesSeleccionadas());
-            this.botonOk.setOperacion(operacion);
             try {
-                this.botonOk.activar();
+                // Envia formulario
+                AdministradorOperaciones.registrarNuevoUsuario(this.usuarioField.getText(),
+                        this.claveField.getText(), this.nombreField.getText(), this.apellidoField.getText(), this.dniField.getText(),
+                        this.panelTipoUsuario.getOpcionesSeleccionadas());
                 AdministradorFrames.mostrarMensaje("OPERACION EXITOSA!");
             } catch (OperacionException ex) {
                 AdministradorFrames.mostrarMensaje(ex.getMessage());
             }
+            /*
+            CrearNuevoUsuarioOperacion operacion =  new CrearNuevoUsuarioOperacion(this.usuarioField.getText(), 
+                this.claveField.getText(), this.nombreField.getText(), this.apellidoField.getText(), this.dniField.getText(), 
+                this.panelTipoUsuario.getOpcionesSeleccionadas());
+            this.botonOk.setOperacion(operacion);
+            
+            try {
+                this.botonOk.activar();
+                
+            } catch (OperacionException ex) {
+                AdministradorFrames.mostrarMensaje(ex.getMessage());
+            }
+            */
         }
     }
 }

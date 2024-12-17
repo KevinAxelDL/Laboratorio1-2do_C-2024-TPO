@@ -13,6 +13,8 @@ import Turnera_medica.UI.Mediadores.AdministradorFrames;
  *
  * @author KevinDL
  */
+
+/*
 public class EliminarUsuarioOperacion implements Operacion{
     private String usuario;
     

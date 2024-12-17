@@ -9,8 +9,12 @@ import Turnera_medica.Excepciones.DAOException;
 import Turnera_medica.Excepciones.ServicioException;
 import Turnera_medica.Modelo.Administrador;
 import Turnera_medica.Modelo.Medico;
+import Turnera_medica.Modelo.Paciente;
+import Turnera_medica.Modelo.Turno;
 import Turnera_medica.Modelo.Usuario;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -26,6 +30,55 @@ public class AdministradorServicios extends UsuarioServicios{
         
         try {
             adminDAOH2.registrarUsuario(nuevoUsuario, arrayOpcionesUsuario); // Se crea el usuario en la BD
+        } catch (DAOException ex) {
+            throw new ServicioException(ex.getMessage());
+        }
+    }
+    
+    public static void registrarTurno(String medico, String paciente, String fechaYHora, String consultorio) throws ServicioException{
+        // Antes de registrar un turno se debe verificar si se ingresaron los usuarios correctos
+        AdministradorDAOH2 adminDAOH2 = new AdministradorDAOH2();
+        Medico nuevoMedico = null;
+        Paciente nuevoPaciente = null;
+        try {
+            boolean usuarioValido = false;
+            List<Usuario> usuarioConRoles = adminDAOH2.listarUsuariosConFuncion(medico); // Retorna 1 usuario con posibles diferentes roles
+            
+            while(!usuarioConRoles.isEmpty() && !usuarioValido){
+                if(usuarioConRoles.get(0) instanceof Medico){
+                    usuarioValido = true;
+                    nuevoMedico = (Medico) usuarioConRoles.get(0);
+                }
+                usuarioConRoles.remove(0);
+            }
+            
+            if(!usuarioValido){
+                throw new ServicioException("INGRESE UN MEDICO VALIDO!");
+            }
+            
+            usuarioValido = false;
+            
+            usuarioConRoles = adminDAOH2.listarUsuariosConFuncion(paciente); // Retorna 1 usuario con posibles diferentes roles
+            
+            while(!usuarioConRoles.isEmpty() && !usuarioValido){
+                if(usuarioConRoles.get(0) instanceof Paciente){
+                    usuarioValido = true;
+                    nuevoPaciente = (Paciente) usuarioConRoles.get(0);
+                }
+                usuarioConRoles.remove(0);
+            }
+            
+            if(!usuarioValido){
+                throw new ServicioException("INGRESE UN PACIENTE VALIDO!");
+            }
+            
+            int consultorioComoNumero = AdministradorServicios.transformarNumeroDeConsultorio(consultorio);
+            
+            Turno nuevoTurno = new Turno(nuevoMedico, nuevoPaciente, fechaYHora, consultorioComoNumero);
+            
+            adminDAOH2.registrarTurno(nuevoTurno);
+      
+            
         } catch (DAOException ex) {
             throw new ServicioException(ex.getMessage());
         }
@@ -55,20 +108,45 @@ public class AdministradorServicios extends UsuarioServicios{
         return resultado;
     }
     
-    // Verificacion de datos
-    @Override
-    public void verificarDatoDNI(String dato) throws ServicioException{
-        super.verificarDatoDNI(dato);
+    public static List<Usuario> listarUsuariosConFuncion(String nombreUsuario) throws ServicioException{
+        AdministradorDAOH2 adminDAOH2 = new AdministradorDAOH2();
+        List<Usuario> resultado;
+        
+        try {
+            resultado = adminDAOH2.listarUsuariosConFuncion(nombreUsuario);
+        } catch (DAOException ex) {
+            throw new ServicioException(ex.getMessage());
+        }
+        
+        return resultado;
     }
     
-    @Override
-    public void verificarDatoNombreApellido(String dato) throws ServicioException{
-        super.verificarDatoNombreApellido(dato);
+    public static List<Turno> listarTurnos() throws ServicioException{
+        AdministradorDAOH2 adminDAOH2 = new AdministradorDAOH2();
+        List<Turno> resultado;
+        
+        try {
+            resultado = adminDAOH2.listarTurnos();
+        } catch (DAOException ex) {
+            throw new ServicioException(ex.getMessage());
+        }
+        
+        return resultado;
     }
-
-    @Override
-    public void verificarDatoClave(String dato) throws ServicioException {
-        super.verificarDatoClave(dato);
+    
+    // Auxiliares
+    private static int transformarNumeroDeConsultorio(String dato) throws ServicioException{
+        int resultado;
+        if(dato.isBlank() || dato.isEmpty()){
+            throw new ServicioException("CONSULTORIO NO VALIDO!");
+        }else{
+            try {
+                resultado = Integer.parseInt(dato); // Los caracteres deben ser numeros
+            } catch (NumberFormatException e) {
+                throw new ServicioException("CONSULTORIO NO VALIDO!");
+            }
+        } 
+        return resultado;
     }
     
     

@@ -8,11 +8,14 @@ import Turnera_medica.Modelo.Administrador;
 import Turnera_medica.Modelo.Medico;
 import Turnera_medica.Modelo.Paciente;
 import Turnera_medica.Modelo.Usuario;
+import Turnera_medica.UI.Frames.FormularioTurnoUI;
 import Turnera_medica.UI.Frames.FormularioUsuarioUI;
 import Turnera_medica.UI.Frames.IngresoCredencialesUI;
 import Turnera_medica.UI.Frames.IngresoNombreUsuarioUI;
 import Turnera_medica.UI.Frames.MensajeUI;
 import Turnera_medica.UI.Frames.MenuAdministradorUI;
+import Turnera_medica.UI.Frames.MenuMedicoUI;
+import Turnera_medica.UI.Frames.ReportesAdministradorUI;
 import Turnera_medica.UI.Frames.UserInterface;
 /**
  *
@@ -29,7 +32,8 @@ public abstract class AdministradorFrames {
         }
        
         if(usuario instanceof Medico){
-            //IMPLEMENTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+            MenuMedicoUI menu = new MenuMedicoUI((Medico)usuario);
+            menu.armar();
         }
         
         if(usuario instanceof Paciente){
@@ -67,5 +71,15 @@ public abstract class AdministradorFrames {
         }
         ultimoMensaje = mensaje;
         mensaje.armar();
+    }
+    
+    public static void mostrarMenuReportesAdministrador(){
+        ReportesAdministradorUI ui = new ReportesAdministradorUI();
+        ui.armar();
+    }
+    
+    public static void mostrarFormularioNuevoTurno(){
+        FormularioTurnoUI ui = new FormularioTurnoUI();
+        ui.armar();
     }
 }

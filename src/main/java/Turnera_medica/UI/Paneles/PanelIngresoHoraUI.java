@@ -23,10 +23,10 @@ public class PanelIngresoHoraUI extends JPanel{
     
     public PanelIngresoHoraUI(){
         
-        SpinnerNumberModel modeloHora = new SpinnerNumberModel(12, 0, 23, 1);
+        this.modeloHora = new SpinnerNumberModel(12, 0, 23, 1);
         this.spinnerHora = new JSpinner(modeloHora);
 
-        SpinnerNumberModel modeloMinuto = new SpinnerNumberModel(0, 0, 59, 1);
+        this.modeloMinuto = new SpinnerNumberModel(0, 0, 59, 1);
         this.spinnerMinuto = new JSpinner(modeloMinuto);
         
         this.setLayout(new FlowLayout());
@@ -36,12 +36,15 @@ public class PanelIngresoHoraUI extends JPanel{
         this.add(spinnerMinuto);
     }
     
-    public String getHora(){
-        return (String) this.modeloHora.getValue();
+    public Object getHora(){
+        return this.spinnerHora.getValue();
     }
     
-    public String getMinutos(){
-        return (String) this.modeloMinuto.getValue();
+    public Object getMinutos(){
+        return this.spinnerMinuto.getValue();
     }
         
+    public String toString(){
+        return this.getHora().toString() +":"+ this.getMinutos().toString() + ":" + "00";
+    }
 }

@@ -11,6 +11,8 @@ import Turnera_medica.UI.Mediadores.AdministradorFrames;
  *
  * @author KevinDL
  */
+
+/*
 public class CrearFormularioNuevoUsuarioOperacion implements Operacion{
 
     @Override

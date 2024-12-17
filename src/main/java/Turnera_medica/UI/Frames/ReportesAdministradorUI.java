@@ -7,9 +7,9 @@ package Turnera_medica.UI.Frames;
 import Turnera_medica.UI.Paneles.PanelTablaUsuariosUI;
 import Turnera_medica.Excepciones.OperacionException;
 import Turnera_medica.UI.Botones.BotonUI;
-import Turnera_medica.UI.Operaciones.ActualizarPanelTablaUsuariosOperacion;
 import Turnera_medica.UI.Frames.UserInterface;
 import Turnera_medica.UI.Mediadores.AdministradorFrames;
+import Turnera_medica.UI.Mediadores.AdministradorOperaciones;
 import Turnera_medica.UI.Paneles.PanelIngresoFechaUI;
 import Turnera_medica.UI.Paneles.PanelIngresoHoraUI;
 import Turnera_medica.UI.Paneles.PanelIngresoStringUI;
@@ -102,13 +102,20 @@ public class ReportesAdministradorUI extends UserInterface implements ActionList
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == this.botonReporteUsuarios){
+            try {
+                AdministradorOperaciones.actualizarPanelTablaUsuarios(this.panelTablaReporteUsuarios);
+            } catch (OperacionException ex) {
+                AdministradorFrames.mostrarMensaje(ex.getMessage());
+            }
+            /*
             ActualizarPanelTablaUsuariosOperacion operacion = new ActualizarPanelTablaUsuariosOperacion(this.panelTablaReporteUsuarios);
             this.botonReporteUsuarios.setOperacion(operacion);
             try {
-                this.botonReporteUsuarios.activar();
+            this.botonReporteUsuarios.activar();
             } catch (OperacionException ex) {
             AdministradorFrames.mostrarMensaje(ex.getMessage());
             }
+            */
         }
     }
     
