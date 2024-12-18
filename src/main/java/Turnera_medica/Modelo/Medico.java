@@ -17,6 +17,11 @@ public class Medico extends Usuario{
         this.precioConsulta = Medico.precioConsultaDefault;
     }
     
+    public Medico(int dni, String nombre, String apellido, String nombreUsuario, String claveUsuario, double precio){
+        super( dni,  nombre,  apellido,  nombreUsuario,  claveUsuario);
+        this.precioConsulta = precio;
+    }
+    
     public String getTipoUsuario(){
         return "MEDICO";
     }

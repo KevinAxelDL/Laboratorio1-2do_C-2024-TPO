@@ -131,15 +131,19 @@ public class AdministradorDAOH2 implements AdministradorDAO {
 
     @Override
     public int eliminarUsuario(String nUsuario) throws DAOException{
-        String operacionSQL1 = "DELETE FROM USUARIO_POR_FUNCION WHERE NOMBRE_USUARIO = '"+ nUsuario +"';";
-        String operacionSQL2 = "DELETE FROM USUARIO WHERE NOMBRE_USUARIO = '"+ nUsuario +"';";
+        String operacionSQL1 = "DELETE FROM USUARIO WHERE NOMBRE_USUARIO = '"+ nUsuario +"'";
+        String operacionSQL2 = "DELETE FROM USUARIO_POR_FUNCION WHERE NOMBRE_USUARIO = '"+ nUsuario +"'";
+        String operacionSQL3 = "DELETE FROM PRECIOS_POR_MEDICO WHERE USUARIO_MEDICO = '"+ nUsuario +"'";
+        String operacionSQL4 = "DELETE FROM TURNO WHERE USUARIO_MEDICO = '"+ nUsuario +"' OR USUARIO_PACIENTE = '"+ nUsuario +"'";
         Connection conexion = DBManager.connect(); // Se abre una conexion con la BD
         int registrosAfectados = 0;
         
         try {
             Statement operacion = conexion.createStatement(); 
-            operacion.execute(operacionSQL1); // Ejecuta la operacion, elimina en tabla
-            registrosAfectados = operacion.executeUpdate(operacionSQL2); // Ejecuta la operacion, elimina en tabla
+            operacion.execute(operacionSQL4); // Ejecuta la operacion, elimina en tabla
+            operacion.execute(operacionSQL3); // Ejecuta la operacion, elimina en tabla
+            operacion.execute(operacionSQL2); // Ejecuta la operacion, elimina en tabla
+            registrosAfectados = operacion.executeUpdate(operacionSQL1); // Ejecuta la operacion, elimina en tabla
             conexion.commit(); // Aplica los cambios an la BD
 	} catch (SQLException e) {
             try {
@@ -160,72 +164,8 @@ public class AdministradorDAOH2 implements AdministradorDAO {
     }
     
     // Reportes
-    @Override
-    public List<Usuario> listarUsuariosConFuncion(String nombreUsuarioBuscado) throws DAOException {
-        String operacionSQL1 = "SELECT DISTINCT u.NOMBRE, APELLIDO, DNI, u.NOMBRE_USUARIO, CLAVE_USUARIO, f.NOMBRE AS NOMBRE_FUNCION \n" +
-            "FROM USUARIO u \n" +
-            "NATURAL JOIN USUARIO_POR_FUNCION uf JOIN FUNCION f \n" +
-            "WHERE ID_FUNCION = ID AND u.NOMBRE_USUARIO = '" +nombreUsuarioBuscado+ "'";
-        Connection conexion = DBManager.connect(); // Se abre una conexion con la BD
-        ResultSet rs = null;
-        List<Usuario> resultado = new ArrayList();
-        
-        try{
-            try {
-            Statement operacion = conexion.createStatement(); 
-            rs = operacion.executeQuery(operacionSQL1); 
-            } catch (SQLException e) {
-                try {
-                    conexion.rollback();
-                    e.printStackTrace();
-                    throw new DAOException("ERROR DESCONOCIDO");
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        
-            try {
-                // Se instancian usuarios en base al result set retornado
-                while(rs.next()){
-                    String nombre = rs.getString("NOMBRE");
-                    String apellido = rs.getString("APELLIDO");
-                    int dni = rs.getInt("DNI");
-                    String nombreUsuario = rs.getString("NOMBRE_USUARIO");
-                    String claveUsuario = rs.getString("CLAVE_USUARIO");
-                    Usuario usuario = null;
-
-                    switch(rs.getString("NOMBRE_FUNCION")){
-                        case "MEDICO":
-                            usuario = new Medico( dni, nombre, apellido, nombreUsuario, claveUsuario);
-                            break;
-                        case "ADMINISTRADOR":
-                            usuario = new Administrador( dni, nombre, apellido, nombreUsuario, claveUsuario);
-                            break;
-                        case "PACIENTE":
-                            usuario = new Paciente( dni, nombre, apellido, nombreUsuario, claveUsuario);
-                            break;
-                    }
-                    resultado.add(usuario);
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                throw new DAOException("ERROR DESCONOCIDO");
-            }
-        }catch(DAOException ex2){
-           throw new DAOException(ex2.getMessage()) ;
-           
-        }finally{
-            try {
-                conexion.close(); // Se CIERRA la conexion para liberar el acceso
-            } catch (SQLException e) {
-		e.printStackTrace();
-            }
-        }
-        
-        
-        return resultado; // Puede retornar mas de una fila ya que un usuario puede tener multiples roles
-    }
-    
+   
+    /*
     @Override
     public List<Usuario> listarUsuariosConFuncion() throws DAOException {
         String operacionSQL1 = "SELECT DISTINCT u.NOMBRE, APELLIDO, DNI, u.NOMBRE_USUARIO, CLAVE_USUARIO, f.NOMBRE AS NOMBRE_FUNCION \n" +
@@ -241,6 +181,7 @@ public class AdministradorDAOH2 implements AdministradorDAO {
             try {
             Statement operacion = conexion.createStatement(); 
             rs = operacion.executeQuery(operacionSQL1); 
+              
             } catch (SQLException e) {
                 try {
                     conexion.rollback();
@@ -280,7 +221,6 @@ public class AdministradorDAOH2 implements AdministradorDAO {
             }
         }catch(DAOException ex2){
            throw new DAOException(ex2.getMessage()) ;
-           
         }finally{
             try {
                 conexion.close(); // Se CIERRA la conexion para liberar el acceso
@@ -292,11 +232,239 @@ public class AdministradorDAOH2 implements AdministradorDAO {
         
         return resultado;
     }
+    */
     
     @Override
-    public List<Turno> listarTurnos() throws ServicioException {
+    public List<Usuario> listarUsuariosConFuncion() throws DAOException {
+
+        List<Usuario> resultado = new ArrayList();
         
-        return null;
+        resultado.addAll(this.listarPacientes());
+        resultado.addAll(this.listarAdministradores());
+        resultado.addAll(this.listarMedicos());
+        
+        return resultado;
+    }
+    
+    
+    private List<Usuario> listarPacientes() throws DAOException{
+        String operacionSQL1 = 
+        "SELECT DISTINCT u.NOMBRE, APELLIDO, DNI, u.NOMBRE_USUARIO, CLAVE_USUARIO, f.NOMBRE AS NOMBRE_FUNCION \n" +
+        "FROM USUARIO u \n" +
+        "NATURAL JOIN USUARIO_POR_FUNCION uf JOIN FUNCION f \n" +
+        "WHERE ID_FUNCION = ID AND ID_FUNCION = "+HerramientasDAO.convertirClaseAID(Paciente.class)+"\n" +
+        "ORDER BY NOMBRE_USUARIO ASC";
+        
+        Connection conexion = DBManager.connect(); // Se abre una conexion con la BD
+        ResultSet rs = null;
+        List<Usuario> resultado = new ArrayList();
+        
+        try{
+            try {
+                Statement operacion = conexion.createStatement(); 
+                rs = operacion.executeQuery(operacionSQL1); 
+            } catch (SQLException e) {
+                try {
+                    conexion.rollback();
+                    e.printStackTrace();
+                    throw new DAOException("ERROR DESCONOCIDO");
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        
+            try {
+                // Se instancian turnos en base al result set retornado
+                while(rs.next()){
+                    String nombre = rs.getString("NOMBRE");
+                    String apellido = rs.getString("APELLIDO");
+                    int dni = rs.getInt("DNI");
+                    String nombreUsuario = rs.getString("NOMBRE_USUARIO");
+                    String claveUsuario = rs.getString("CLAVE_USUARIO");
+                    
+                    Paciente paciente = new Paciente(dni,  nombre,  apellido,  nombreUsuario,  claveUsuario);
+                    
+                    resultado.add(paciente);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                throw new DAOException("ERROR DESCONOCIDO");
+            }
+        }catch(DAOException ex2){
+           throw new DAOException(ex2.getMessage()) ;
+        }finally{
+            try {
+                conexion.close(); // Se CIERRA la conexion para liberar el acceso
+            } catch (SQLException e) {
+		e.printStackTrace();
+            }
+        }
+        return resultado;
+    }
+    
+    private List<Usuario> listarAdministradores() throws DAOException{
+        String operacionSQL1 = 
+        "SELECT DISTINCT u.NOMBRE, APELLIDO, DNI, u.NOMBRE_USUARIO, CLAVE_USUARIO, f.NOMBRE AS NOMBRE_FUNCION \n" +
+        "FROM USUARIO u \n" +
+        "NATURAL JOIN USUARIO_POR_FUNCION uf JOIN FUNCION f \n" +
+        "WHERE ID_FUNCION = ID AND ID_FUNCION = "+HerramientasDAO.convertirClaseAID(Administrador.class)+"\n" +
+        "ORDER BY NOMBRE_USUARIO ASC";
+        
+        Connection conexion = DBManager.connect(); // Se abre una conexion con la BD
+        ResultSet rs = null;
+        List<Usuario> resultado = new ArrayList();
+        
+        try{
+            try {
+                Statement operacion = conexion.createStatement(); 
+                rs = operacion.executeQuery(operacionSQL1); 
+            } catch (SQLException e) {
+                try {
+                    conexion.rollback();
+                    e.printStackTrace();
+                    throw new DAOException("ERROR DESCONOCIDO");
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        
+            try {
+                // Se instancian turnos en base al result set retornado
+                while(rs.next()){
+                    String nombre = rs.getString("NOMBRE");
+                    String apellido = rs.getString("APELLIDO");
+                    int dni = rs.getInt("DNI");
+                    String nombreUsuario = rs.getString("NOMBRE_USUARIO");
+                    String claveUsuario = rs.getString("CLAVE_USUARIO");
+                    
+                    Administrador administrador = new Administrador(dni,  nombre,  apellido,  nombreUsuario,  claveUsuario);
+                    
+                    resultado.add(administrador);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                throw new DAOException("ERROR DESCONOCIDO");
+            }
+        }catch(DAOException ex2){
+           throw new DAOException(ex2.getMessage()) ;
+        }finally{
+            try {
+                conexion.close(); // Se CIERRA la conexion para liberar el acceso
+            } catch (SQLException e) {
+		e.printStackTrace();
+            }
+        }
+        return resultado;
+    }
+    
+    private List<Medico> listarMedicos() throws DAOException{
+        String operacionSQL1 = 
+        "SELECT DISTINCT u.NOMBRE, APELLIDO, DNI, u.NOMBRE_USUARIO, CLAVE_USUARIO, f.NOMBRE AS NOMBRE_FUNCION, PRECIO_CONSULTA\n" +
+        "FROM USUARIO u\n" +
+        "NATURAL JOIN USUARIO_POR_FUNCION uf JOIN FUNCION f JOIN PRECIOS_POR_MEDICO ON u.NOMBRE_USUARIO = USUARIO_MEDICO\n" +
+        "WHERE ID_FUNCION = ID AND ID_FUNCION = 11\n" +
+        "ORDER BY NOMBRE_USUARIO ASC";
+        
+        Connection conexion = DBManager.connect(); // Se abre una conexion con la BD
+        ResultSet rs = null;
+        List<Medico> resultado = new ArrayList();
+        
+        try{
+            try {
+                Statement operacion = conexion.createStatement(); 
+                rs = operacion.executeQuery(operacionSQL1); 
+            } catch (SQLException e) {
+                try {
+                    conexion.rollback();
+                    e.printStackTrace();
+                    throw new DAOException("ERROR DESCONOCIDO");
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        
+            try {
+                // Se instancian turnos en base al result set retornado
+                while(rs.next()){
+                    String nombre = rs.getString("NOMBRE");
+                    String apellido = rs.getString("APELLIDO");
+                    int dni = rs.getInt("DNI");
+                    String nombreUsuario = rs.getString("NOMBRE_USUARIO");
+                    String claveUsuario = rs.getString("CLAVE_USUARIO");
+                    double precio = rs.getInt("PRECIO_CONSULTA");
+                    
+                    Medico medico = new Medico(dni,  nombre,  apellido,  nombreUsuario,  claveUsuario, precio);
+                    
+                    resultado.add(medico);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                throw new DAOException("ERROR DESCONOCIDO");
+            }
+        }catch(DAOException ex2){
+           throw new DAOException(ex2.getMessage()) ;
+        }finally{
+            try {
+                conexion.close(); // Se CIERRA la conexion para liberar el acceso
+            } catch (SQLException e) {
+		e.printStackTrace();
+            }
+        }
+        return resultado;
+    }
+    
+    @Override
+    public List<Turno> listarTurnos() throws DAOException {
+        String operacionSQL1 = "SELECT * FROM TURNO ";
+        Connection conexion = DBManager.connect(); // Se abre una conexion con la BD
+        ResultSet rs = null;
+        List<Turno> resultado = new ArrayList();
+        
+        try{
+            try {
+            Statement operacion = conexion.createStatement(); 
+            rs = operacion.executeQuery(operacionSQL1); 
+            } catch (SQLException e) {
+                try {
+                    conexion.rollback();
+                    e.printStackTrace();
+                    throw new DAOException("ERROR DESCONOCIDO");
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        
+            try {
+                // Se instancian turnos en base al result set retornado
+                while(rs.next()){
+                    String medicoUs = rs.getString("USUARIO_MEDICO");
+                    String pacienteUs = rs.getString("USUARIO_PACIENTE");
+                    String fehchaYHora = rs.getTimestamp("FECHA_Y_HORA").toString();
+                    String consultorio = rs.getString("CONSULTORIO");
+                    int precio = Integer.parseInt(rs.getString("PRECIO"));
+                    
+                    Medico medico = (Medico) this.obtenerUsuario(medicoUs, Medico.class);
+                    Paciente paciente = (Paciente) this.obtenerUsuario(pacienteUs, Paciente.class);
+                    
+                    Turno turno = new Turno(medico, paciente, fehchaYHora, Integer.parseInt(consultorio), precio);
+                    
+                    resultado.add(turno);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                throw new DAOException("ERROR DESCONOCIDO");
+            }
+        }catch(DAOException ex2){
+           throw new DAOException(ex2.getMessage()) ;
+        }finally{
+            try {
+                conexion.close(); // Se CIERRA la conexion para liberar el acceso
+            } catch (SQLException e) {
+		e.printStackTrace();
+            }
+        }
+        
+        return resultado;
     }
 
     // Modificacion
@@ -307,5 +475,27 @@ public class AdministradorDAOH2 implements AdministradorDAO {
     }
     
     // Auxiliar
+
+    @Override
+    public Usuario obtenerUsuario(String nombreUsuario, Class<?> tipoUsuario) throws DAOException {
+        //Retorna un usuario 
+        List<Usuario> lista = this.listarUsuariosConFuncion(); // Retorna una lista con un usuarios y sus funciones
+        Usuario nuevoUsuario = null;
+        boolean encontrado = false;
+        
+        while(!lista.isEmpty() && !encontrado){
+            if(tipoUsuario.isInstance(lista.get(0)) && lista.get(0).getNombreUsuario().equalsIgnoreCase(nombreUsuario)){
+                encontrado = true;
+                nuevoUsuario = lista.get(0);
+            }
+            lista.remove(0);
+        }
+        
+        if(!encontrado){
+            throw new DAOException("NO EXISTE UN USUARIO CON ESA FUNCION!");
+        }
+        
+        return nuevoUsuario;
+    }
   
 }

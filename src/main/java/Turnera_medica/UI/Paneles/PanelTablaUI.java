@@ -32,4 +32,6 @@ public abstract class PanelTablaUI<T> extends JPanel{
     }
     
     protected abstract void obtenerDatos();
+    
+    
 }

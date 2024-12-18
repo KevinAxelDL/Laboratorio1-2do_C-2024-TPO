@@ -41,43 +41,14 @@ public class AdministradorServicios extends UsuarioServicios{
         Medico nuevoMedico = null;
         Paciente nuevoPaciente = null;
         try {
-            boolean usuarioValido = false;
-            List<Usuario> usuarioConRoles = adminDAOH2.listarUsuariosConFuncion(medico); // Retorna 1 usuario con posibles diferentes roles
-            
-            while(!usuarioConRoles.isEmpty() && !usuarioValido){
-                if(usuarioConRoles.get(0) instanceof Medico){
-                    usuarioValido = true;
-                    nuevoMedico = (Medico) usuarioConRoles.get(0);
-                }
-                usuarioConRoles.remove(0);
-            }
-            
-            if(!usuarioValido){
-                throw new ServicioException("INGRESE UN MEDICO VALIDO!");
-            }
-            
-            usuarioValido = false;
-            
-            usuarioConRoles = adminDAOH2.listarUsuariosConFuncion(paciente); // Retorna 1 usuario con posibles diferentes roles
-            
-            while(!usuarioConRoles.isEmpty() && !usuarioValido){
-                if(usuarioConRoles.get(0) instanceof Paciente){
-                    usuarioValido = true;
-                    nuevoPaciente = (Paciente) usuarioConRoles.get(0);
-                }
-                usuarioConRoles.remove(0);
-            }
-            
-            if(!usuarioValido){
-                throw new ServicioException("INGRESE UN PACIENTE VALIDO!");
-            }
+            Medico medicoRes = (Medico) adminDAOH2.obtenerUsuario(medico, Medico.class); // Retorna 1 usuario
+            Paciente pacienteRes = (Paciente) adminDAOH2.obtenerUsuario(paciente, Paciente.class); // Retorna 1 usuario
             
             int consultorioComoNumero = AdministradorServicios.transformarNumeroDeConsultorio(consultorio);
             
-            Turno nuevoTurno = new Turno(nuevoMedico, nuevoPaciente, fechaYHora, consultorioComoNumero);
+            Turno nuevoTurno = new Turno(medicoRes, pacienteRes, fechaYHora, consultorioComoNumero);
             
             adminDAOH2.registrarTurno(nuevoTurno);
-      
             
         } catch (DAOException ex) {
             throw new ServicioException(ex.getMessage());
@@ -107,7 +78,7 @@ public class AdministradorServicios extends UsuarioServicios{
         
         return resultado;
     }
-    
+    /*
     public static List<Usuario> listarUsuariosConFuncion(String nombreUsuario) throws ServicioException{
         AdministradorDAOH2 adminDAOH2 = new AdministradorDAOH2();
         List<Usuario> resultado;
@@ -120,12 +91,12 @@ public class AdministradorServicios extends UsuarioServicios{
         
         return resultado;
     }
-    
+    */
     public static List<Turno> listarTurnos() throws ServicioException{
         AdministradorDAOH2 adminDAOH2 = new AdministradorDAOH2();
         List<Turno> resultado;
-        
         try {
+            resultado = adminDAOH2.listarTurnos();
             resultado = adminDAOH2.listarTurnos();
         } catch (DAOException ex) {
             throw new ServicioException(ex.getMessage());

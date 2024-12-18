@@ -24,8 +24,8 @@ public class TurnoTableModel extends GenericoTableModel<Turno>{
     public Object getValueAt(int rowIndex, int columnIndex) {
         Turno turno = datos.get(rowIndex);
         switch (columnIndex) {
-            case 0: return turno.getPaciente();
-            case 1: return turno.getMedico();
+            case 0: return turno.getPaciente().getNombreUsuario();
+            case 1: return turno.getMedico().getNombreUsuario();
             case 2: return turno.getFechaYHora();
             case 3: return turno.getPrecio();
             default: return null;

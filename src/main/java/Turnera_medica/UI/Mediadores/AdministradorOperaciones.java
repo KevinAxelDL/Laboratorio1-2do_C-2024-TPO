@@ -9,6 +9,7 @@ import Turnera_medica.Excepciones.ServicioException;
 import Turnera_medica.Modelo.Usuario;
 import Turnera_medica.Servicios.AdministradorServicios;
 import Turnera_medica.Servicios.UsuarioServicios;
+import Turnera_medica.UI.Paneles.PanelTablaUI;
 import Turnera_medica.UI.Paneles.PanelTablaUsuariosUI;
 import java.util.List;
 import java.util.logging.Level;
@@ -74,11 +75,6 @@ public abstract class AdministradorOperaciones {
         } catch (ServicioException ex) {
             throw new OperacionException(ex.getMessage());
         }
-    }
-    
-    public static void actualizarPanelTablaUsuarios(PanelTablaUsuariosUI panel) throws OperacionException {
-        //Obtencion de datos
-        panel.actualizar();
     }
     
     public static void registrarNuevoTurno(String medico, String paciente, String fechaYHora, String consultorio) throws OperacionException{

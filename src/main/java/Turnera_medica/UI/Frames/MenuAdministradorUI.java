@@ -27,7 +27,7 @@ public class MenuAdministradorUI extends MenuUI implements ActionListener{
     private BotonUI botonCrearTurno;
     
     public MenuAdministradorUI(Administrador administrador){
-        super("Menu administrador", administrador);
+        super("Menu administrador", administrador, 7);
         this.botonCrearUsuario = new BotonUI("Cargar usuario");
         this.botonEliminarUsuario = new BotonUI("Eliminar usuario");
         this.botonVerReportes = new BotonUI("Reportes");
@@ -35,9 +35,7 @@ public class MenuAdministradorUI extends MenuUI implements ActionListener{
         this.botonCrearTurno = new BotonUI("Cargar turno");
         
         // Se define el comportamiento del frame 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Termina el programa una vez cerrado el frame
-        this.setLayout(new GridLayout(6, 1));
-        this.configurarPorDefault();
+        
     }
     
     public void armar() {
@@ -68,6 +66,7 @@ public class MenuAdministradorUI extends MenuUI implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         // Abre un frame diferente dependiento del boton clickeado
+        super.actionPerformed(e);
         
         if(e.getSource() == this.botonCrearUsuario){
             AdministradorFrames.mostrarFormularioNuevoUsuario();
@@ -87,6 +86,10 @@ public class MenuAdministradorUI extends MenuUI implements ActionListener{
         
         if(e.getSource() == this.botonCrearTurno){
             AdministradorFrames.mostrarFormularioNuevoTurno();
+        }
+        
+        if(e.getSource() == this.botonCerrarSesion){
+            this.cerrarSesion();
         }
     }
 }

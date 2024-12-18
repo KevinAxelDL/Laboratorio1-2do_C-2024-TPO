@@ -13,11 +13,14 @@ import Turnera_medica.UI.Mediadores.AdministradorOperaciones;
 import Turnera_medica.UI.Paneles.PanelIngresoFechaUI;
 import Turnera_medica.UI.Paneles.PanelIngresoHoraUI;
 import Turnera_medica.UI.Paneles.PanelIngresoStringUI;
+import Turnera_medica.UI.Paneles.PanelTablaTurnosUI;
+import Turnera_medica.UI.Paneles.PanelTablaUI;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 
 /**
  *
@@ -29,10 +32,12 @@ public class ReportesAdministradorUI extends UserInterface implements ActionList
     private BotonUI botonReporteTurnos;
     private BotonUI botonReporteGanancias;
     private PanelTablaUsuariosUI panelTablaReporteUsuarios;
+    private PanelTablaTurnosUI panelTablaReporteTurnos;
     private JLabel tituloReporteUsuarios;
     private JLabel tituloReporteGanancias;
     private PanelIngresoHoraUI panelIngresoHora;
     private PanelIngresoFechaUI panelIngresoFecha;
+    private PanelTablaUI ultimoPanelTabla;
     
     
     public ReportesAdministradorUI(){
@@ -40,18 +45,18 @@ public class ReportesAdministradorUI extends UserInterface implements ActionList
         this.setLayout(new GridLayout(1, 2));
         this.setSize(1500,900);
         
-        this.panelTablaReporteUsuarios = new PanelTablaUsuariosUI();    
+        this.panelTablaReporteUsuarios = new PanelTablaUsuariosUI();
+        this.panelTablaReporteTurnos = new PanelTablaTurnosUI();
            
-        this.tituloReporteUsuarios = new JLabel("Listar usuarios");
         this.botonReporteUsuarios = new BotonUI("Actualizar (1)");
         this.botonReporteUsuarios.addActionListener(this);
         
-        this.tituloReporteGanancias = new JLabel("Listar ganancias");
         this.panelIngresoFecha = new PanelIngresoFechaUI();
         this.botonReporteGanancias = new BotonUI("Actualizar (2)");
         this.botonReporteGanancias.addActionListener(this);
         
         this.botonReporteTurnos = new BotonUI("Actualizar (3)");
+        this.botonReporteTurnos.addActionListener(this);
         
         this.panelOpciones = new JPanel(); 
         this.panelOpciones.setLayout(new GridLayout(8,1));
@@ -59,7 +64,7 @@ public class ReportesAdministradorUI extends UserInterface implements ActionList
     
     @Override
     public void armar() {
-        //Panel ganancias fechas y medico
+        //Panel ganancias; fechas y medico
         JPanel panelFechas = new JPanel();
         
         panelFechas.setLayout(new GridLayout(3,2));
@@ -80,19 +85,17 @@ public class ReportesAdministradorUI extends UserInterface implements ActionList
         panelFechas.add(panelString);
         
         //Panel opciones
-        this.panelOpciones.add(this.tituloReporteUsuarios);
+        this.panelOpciones.add(new JLabel("Listar usuarios"));
         this.panelOpciones.add(this.botonReporteUsuarios);
         
-        this.panelOpciones.add(this.tituloReporteGanancias);
+        this.panelOpciones.add(new JLabel("Listar ganancias"));
         this.panelOpciones.add(panelFechas);
         this.panelOpciones.add(this.botonReporteGanancias);
         
-        JLabel tituloReporteTurnos = new JLabel("Listar turnos");
-        this.panelOpciones.add(tituloReporteTurnos);
+        this.panelOpciones.add(new JLabel("Listar turnos"));
         this.panelOpciones.add(this.botonReporteTurnos);
         
         //Frame principal
-        this.add(this.panelTablaReporteUsuarios);
         this.add(this.panelOpciones);
         
         super.centrar();
@@ -101,22 +104,43 @@ public class ReportesAdministradorUI extends UserInterface implements ActionList
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         if(e.getSource() == this.botonReporteUsuarios){
+            this.asignarUltimoPanel(this.panelTablaReporteUsuarios);
+            
             try {
-                AdministradorOperaciones.actualizarPanelTablaUsuarios(this.panelTablaReporteUsuarios);
+                this.mostrarPanelTabla(this.panelTablaReporteUsuarios);
             } catch (OperacionException ex) {
                 AdministradorFrames.mostrarMensaje(ex.getMessage());
             }
-            /*
-            ActualizarPanelTablaUsuariosOperacion operacion = new ActualizarPanelTablaUsuariosOperacion(this.panelTablaReporteUsuarios);
-            this.botonReporteUsuarios.setOperacion(operacion);
-            try {
-            this.botonReporteUsuarios.activar();
-            } catch (OperacionException ex) {
-            AdministradorFrames.mostrarMensaje(ex.getMessage());
-            }
-            */
         }
+        
+        if(e.getSource() == this.botonReporteTurnos){
+            this.asignarUltimoPanel(this.panelTablaReporteTurnos);
+                
+            try {
+                this.mostrarPanelTabla(this.panelTablaReporteTurnos);
+            } catch (OperacionException ex) {
+                AdministradorFrames.mostrarMensaje(ex.getMessage());
+            }
+        }
+    }
+    
+    private void asignarUltimoPanel(PanelTablaUI panel){
+        if(this.ultimoPanelTabla != null){
+            this.remove(this.ultimoPanelTabla); 
+        }
+        this.ultimoPanelTabla = panel;
+        this.revalidate();
+        this.repaint();
+    }
+    
+    private void mostrarPanelTabla(PanelTablaUI panel) throws OperacionException {
+        //Obtencion de datos
+        this.add(panel,0);
+        panel.actualizar();
+        this.revalidate();
+        this.repaint();
     }
     
     

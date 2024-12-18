@@ -28,9 +28,9 @@ public interface AdministradorDAO{
     // Consultas
     public List<Usuario> listarUsuariosConFuncion() throws DAOException;
     
-    public List<Usuario> listarUsuariosConFuncion(String nombreUsuarioBuscado) throws DAOException;
+    public List<Turno> listarTurnos() throws DAOException;
     
-    public List<Turno> listarTurnos() throws ServicioException;
+    public Usuario obtenerUsuario(String nombreUsuario, Class<?> tipoUsuario) throws DAOException;
     
     // Modificar registro
     public void asignarFuncionAdministrador(Usuario usuario) throws DAOException;

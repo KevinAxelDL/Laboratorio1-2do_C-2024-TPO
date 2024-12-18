@@ -17,12 +17,18 @@ import Turnera_medica.UI.Frames.MenuAdministradorUI;
 import Turnera_medica.UI.Frames.MenuMedicoUI;
 import Turnera_medica.UI.Frames.ReportesAdministradorUI;
 import Turnera_medica.UI.Frames.UserInterface;
+
 /**
  *
  * @author KevinDL
  */
 public abstract class AdministradorFrames {
     private static MensajeUI ultimoMensaje;
+    private static UserInterface ultimoFrame1;
+    private static UserInterface ultimoFrame2;
+    private static UserInterface ultimoFrame3;
+    private static UserInterface ultimoFrame4;
+    private static UserInterface ultimoFrame5;
     
     public static void mostrarMenu(Usuario usuario){
         // Abre menu de administrador
@@ -45,17 +51,29 @@ public abstract class AdministradorFrames {
     public static void mostrarIngresoCredenciales(){
         // Abre
         IngresoCredencialesUI ui = new IngresoCredencialesUI();
+        if(ultimoFrame1 != null){
+            ultimoFrame1.cerrar();
+        }
+        ultimoFrame1 = ui;
         ui.armar();
     }
     
     public static void mostrarFormularioNuevoUsuario(){
         // Accion del boton
         FormularioUsuarioUI ui = new FormularioUsuarioUI();
+        if(ultimoFrame2 != null){
+            ultimoFrame2.cerrar();
+        }
+        ultimoFrame2 = ui;
         ui.armar();
     }
     
     public static void mostrarIngresoNombreUsuario(String texto){
         IngresoNombreUsuarioUI ui = new IngresoNombreUsuarioUI(texto);
+        if(ultimoFrame3 != null){
+            ultimoFrame3.cerrar();
+        }
+        ultimoFrame3 = ui;
         ui.armar();
     }
     
@@ -75,11 +93,19 @@ public abstract class AdministradorFrames {
     
     public static void mostrarMenuReportesAdministrador(){
         ReportesAdministradorUI ui = new ReportesAdministradorUI();
+        if(ultimoFrame4 != null){
+            ultimoFrame4.cerrar();
+        }
+        ultimoFrame4 = ui;
         ui.armar();
     }
     
     public static void mostrarFormularioNuevoTurno(){
         FormularioTurnoUI ui = new FormularioTurnoUI();
+        if(ultimoFrame5!= null){
+            ultimoFrame5.cerrar();
+        }
+        ultimoFrame5 = ui;
         ui.armar();
     }
 }

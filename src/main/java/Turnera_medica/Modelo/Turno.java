@@ -22,6 +22,14 @@ public class Turno {
         this.consultorio = consultorio;
         this.precio = medico.getPrecioConsulta();
     }
+    
+    public Turno(Medico medico, Paciente paciente, String fechaYHora, int consultorio, int precio){
+        this.medico = medico;
+        this.paciente = paciente;
+        this.fechaYHora = fechaYHora;
+        this.consultorio = consultorio;
+        this.precio = precio;
+    }
 
     public Medico getMedico() {
         return medico;

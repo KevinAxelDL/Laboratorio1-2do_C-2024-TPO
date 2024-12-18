@@ -17,9 +17,9 @@ public class MenuMedicoUI extends MenuUI{
     private BotonUI botonMostrarReportes;
     
     public MenuMedicoUI(Medico medico){
-        super("Menu medico", medico);
+        super("Menu medico", medico, 3);
         super.configurarPorDefault();
-        this.setLayout(new GridLayout(3,1));
+
         this.botonMostrarReportes = new BotonUI("Reportes");
     }
     
@@ -34,6 +34,8 @@ public class MenuMedicoUI extends MenuUI{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        
         if(e.getSource() == this.botonMostrarReportes){
             
         }
