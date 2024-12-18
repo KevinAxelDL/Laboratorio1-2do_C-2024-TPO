@@ -7,14 +7,12 @@ package Turnera_medica.Servicios;
 import Turnera_medica.DAO.AdministradorDAOH2;
 import Turnera_medica.Excepciones.DAOException;
 import Turnera_medica.Excepciones.ServicioException;
-import Turnera_medica.Modelo.Administrador;
 import Turnera_medica.Modelo.Medico;
 import Turnera_medica.Modelo.Paciente;
 import Turnera_medica.Modelo.Turno;
 import Turnera_medica.Modelo.Usuario;
+import Turnera_medica.UI.DatosReportes.GananciasReporte;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -78,29 +76,47 @@ public class AdministradorServicios extends UsuarioServicios{
         
         return resultado;
     }
-    /*
-    public static List<Usuario> listarUsuariosConFuncion(String nombreUsuario) throws ServicioException{
-        AdministradorDAOH2 adminDAOH2 = new AdministradorDAOH2();
-        List<Usuario> resultado;
-        
-        try {
-            resultado = adminDAOH2.listarUsuariosConFuncion(nombreUsuario);
-        } catch (DAOException ex) {
-            throw new ServicioException(ex.getMessage());
-        }
-        
-        return resultado;
-    }
-    */
+    
     public static List<Turno> listarTurnos() throws ServicioException{
         AdministradorDAOH2 adminDAOH2 = new AdministradorDAOH2();
         List<Turno> resultado;
         try {
             resultado = adminDAOH2.listarTurnos();
-            resultado = adminDAOH2.listarTurnos();
         } catch (DAOException ex) {
             throw new ServicioException(ex.getMessage());
         }
+        return resultado;
+    }
+    
+    public static List<Turno> listarTurnos(String nombreUsuario, Class<?> tipoUsuario) throws ServicioException{
+        AdministradorDAOH2 adminDAOH2 = new AdministradorDAOH2();
+        List<Turno> resultado;
+        try {
+            resultado = adminDAOH2.listarTurnos(nombreUsuario, tipoUsuario);
+        } catch (DAOException ex) {
+            throw new ServicioException(ex.getMessage());
+        }
+        return resultado;
+    }
+    
+    public static List<GananciasReporte> listarGanancias(String fechaDesde, String fechaHasta, String usuarioMedico) throws ServicioException{
+        AdministradorDAOH2 adminDAOH2 = new AdministradorDAOH2();
+        List<GananciasReporte> resultado;
+        
+        if(usuarioMedico == null || usuarioMedico.isBlank() || usuarioMedico.isEmpty()){
+            try {
+                resultado = adminDAOH2.listarGanancias(fechaDesde, fechaHasta);
+            } catch (DAOException ex) {
+                throw new ServicioException(ex.getMessage());
+            }
+        }else{
+            try {
+                resultado = adminDAOH2.listarGanancias(fechaDesde, fechaHasta, usuarioMedico);
+            } catch (DAOException ex) {
+                throw new ServicioException(ex.getMessage());
+            }
+        }
+        
         
         return resultado;
     }

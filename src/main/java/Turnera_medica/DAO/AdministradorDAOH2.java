@@ -14,6 +14,7 @@ import Turnera_medica.Modelo.Medico;
 import Turnera_medica.Modelo.Paciente;
 import Turnera_medica.Modelo.Turno;
 import Turnera_medica.Modelo.Usuario;
+import Turnera_medica.UI.DatosReportes.GananciasReporte;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -137,7 +138,11 @@ public class AdministradorDAOH2 implements AdministradorDAO {
         String operacionSQL4 = "DELETE FROM TURNO WHERE USUARIO_MEDICO = '"+ nUsuario +"' OR USUARIO_PACIENTE = '"+ nUsuario +"'";
         Connection conexion = DBManager.connect(); // Se abre una conexion con la BD
         int registrosAfectados = 0;
-        
+        System.out.println(nUsuario);
+        System.out.println(nUsuario);
+        System.out.println(nUsuario);
+        System.out.println(nUsuario);
+        System.out.println(nUsuario);
         try {
             Statement operacion = conexion.createStatement(); 
             operacion.execute(operacionSQL4); // Ejecuta la operacion, elimina en tabla
@@ -414,6 +419,70 @@ public class AdministradorDAOH2 implements AdministradorDAO {
     }
     
     @Override
+    public List<Turno> listarTurnos(String nombreUsuario, Class<?> tipoUsuario) throws DAOException {
+        String operacionSQL1;
+        if(tipoUsuario == Medico.class){
+            operacionSQL1 = "SELECT * FROM TURNO WHERE USUARIO_MEDICO = '"+nombreUsuario+"'";
+        }else{
+            if(tipoUsuario == Paciente.class){
+                operacionSQL1 = "SELECT * FROM TURNO WHERE USUARIO_PACIENTE = '"+nombreUsuario+"'";
+            }else{
+                throw new DAOException("TIPO DE USUARIO NO COMPATIBLE CON EL METODO!");
+            }
+        }
+        
+        Connection conexion = DBManager.connect(); // Se abre una conexion con la BD
+        ResultSet rs = null;
+        List<Turno> resultado = new ArrayList();
+        
+        try{
+            try {
+            Statement operacion = conexion.createStatement(); 
+            rs = operacion.executeQuery(operacionSQL1); 
+            } catch (SQLException e) {
+                try {
+                    conexion.rollback();
+                    e.printStackTrace();
+                    throw new DAOException("ERROR DESCONOCIDO");
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        
+            try {
+                // Se instancian turnos en base al result set retornado
+                while(rs.next()){
+                    String medicoUs = rs.getString("USUARIO_MEDICO");
+                    String pacienteUs = rs.getString("USUARIO_PACIENTE");
+                    String fehchaYHora = rs.getTimestamp("FECHA_Y_HORA").toString();
+                    String consultorio = rs.getString("CONSULTORIO");
+                    int precio = Integer.parseInt(rs.getString("PRECIO"));
+                    
+                    Medico medico = (Medico) this.obtenerUsuario(medicoUs, Medico.class);
+                    Paciente paciente = (Paciente) this.obtenerUsuario(pacienteUs, Paciente.class);
+                    
+                    Turno turno = new Turno(medico, paciente, fehchaYHora, Integer.parseInt(consultorio), precio);
+                    
+                    resultado.add(turno);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                throw new DAOException("ERROR DESCONOCIDO");
+            }
+        }catch(DAOException ex2){
+           throw new DAOException(ex2.getMessage()) ;
+        }finally{
+            try {
+                conexion.close(); // Se CIERRA la conexion para liberar el acceso
+            } catch (SQLException e) {
+		e.printStackTrace();
+            }
+        }
+        
+        return resultado;
+    }
+    
+    @Override
     public List<Turno> listarTurnos() throws DAOException {
         String operacionSQL1 = "SELECT * FROM TURNO ";
         Connection conexion = DBManager.connect(); // Se abre una conexion con la BD
@@ -466,7 +535,91 @@ public class AdministradorDAOH2 implements AdministradorDAO {
         
         return resultado;
     }
+    
+    @Override
+    public List<GananciasReporte> listarGanancias(String fechaDesde, String fechaHasta) throws DAOException{
+        List<Medico> listadoMedicos;
+        List<Turno> listadoTurnos;
+        List<GananciasReporte> listadoGanancias= new ArrayList<GananciasReporte>();
+        GananciasReporte reporte = null;
+        int contadorTurnos = 0;
+        int iteradorTurnos;
+        double gananciaTotal = 0;
+        
+        listadoMedicos = this.listarMedicos();
+        listadoTurnos = this.listarTurnos();
+        
+        System.out.println(fechaDesde);
+        System.out.println(fechaHasta);
+        
+        Timestamp fechaDesdeConv = HerramientasDAO.convertirATimeStamp(fechaDesde);
+        Timestamp fechaHastaConv = HerramientasDAO.convertirATimeStamp(fechaHasta);
+        
+        while(!listadoMedicos.isEmpty()){
+            //Por cada medico
+            Medico medicoActual = listadoMedicos.get(0);
+            
+            for(iteradorTurnos = 0; iteradorTurnos < listadoTurnos.size(); iteradorTurnos++){
+                //Por cada turno
+                Turno turnoActual = listadoTurnos.get(iteradorTurnos);
+                if(medicoActual.getNombreUsuario().equals(turnoActual.getMedico().getNombreUsuario())){
+                    //Coincide el medico en el turno
+                    Timestamp fechaTurno = HerramientasDAO.convertirATimeStamp(turnoActual.getFechaYHora());
+                    
+                    if(fechaDesdeConv.compareTo(fechaTurno) <= 0 && fechaHastaConv.compareTo(fechaTurno) >= 0){
+                        //Turno entre las 2 fechas ingresadas
+                        contadorTurnos += 1;
+                        gananciaTotal += turnoActual.getPrecio();
+                    }  
+                }
+            }
+            reporte = new GananciasReporte(medicoActual, contadorTurnos, fechaDesde, fechaHasta, gananciaTotal);
+            listadoGanancias.add(reporte);
+            listadoMedicos.remove(0);// Siguiente medico
+            iteradorTurnos = 0;
+            contadorTurnos = 0;
+            gananciaTotal = 0;
+        }
+        
+        return listadoGanancias;
+    }
+    
+    @Override
+    public List<GananciasReporte> listarGanancias(String fechaDesde, String fechaHasta, String usuarioMedico) throws DAOException{
+        Medico medico;
+        List<Turno> listadoTurnos;
+        List<GananciasReporte> listadoGanancias= new ArrayList<GananciasReporte>();
+        GananciasReporte reporte = null;
+        int contadorTurnos = 0;
+        double gananciaTotal = 0;
+        
+        medico = (Medico) this.obtenerUsuario(usuarioMedico, Medico.class);
+        listadoTurnos = this.listarTurnos();
+        
+        Timestamp fechaDesdeConv = HerramientasDAO.convertirATimeStamp(fechaDesde);
+        Timestamp fechaHastaConv = HerramientasDAO.convertirATimeStamp(fechaHasta);
+        
+        while(!listadoTurnos.isEmpty()){
+            //Por cada turno
+            Turno turnoActual = listadoTurnos.get(0);
+            if(medico.getNombreUsuario().equals(turnoActual.getMedico().getNombreUsuario())){
+                //Coincide el medico en el turno
+                Timestamp fechaTurno = HerramientasDAO.convertirATimeStamp(turnoActual.getFechaYHora());
 
+                if(fechaDesdeConv.compareTo(fechaTurno) <= 0 && fechaHastaConv.compareTo(fechaTurno) >= 0){
+                    //Turno entre las 2 fechas ingresadas
+                    contadorTurnos += 1;
+                    gananciaTotal += turnoActual.getPrecio();
+                }  
+            }
+            listadoTurnos.remove(0);
+        }
+        reporte = new GananciasReporte(medico, contadorTurnos, fechaDesde, fechaHasta, gananciaTotal);
+        listadoGanancias.add(reporte);
+        
+        return listadoGanancias;
+    }
+    
     // Modificacion
     
     @Override
@@ -484,6 +637,7 @@ public class AdministradorDAOH2 implements AdministradorDAO {
         boolean encontrado = false;
         
         while(!lista.isEmpty() && !encontrado){
+
             if(tipoUsuario.isInstance(lista.get(0)) && lista.get(0).getNombreUsuario().equalsIgnoreCase(nombreUsuario)){
                 encontrado = true;
                 nuevoUsuario = lista.get(0);

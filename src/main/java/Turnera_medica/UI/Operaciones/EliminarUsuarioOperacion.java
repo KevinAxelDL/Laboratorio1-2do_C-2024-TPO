@@ -14,12 +14,13 @@ import Turnera_medica.UI.Mediadores.AdministradorFrames;
  * @author KevinDL
  */
 
-/*
-public class EliminarUsuarioOperacion implements Operacion{
-    private String usuario;
+public class EliminarUsuarioOperacion extends OperacionSobreUsuario{
     
     public EliminarUsuarioOperacion(String usuario){
-        this.usuario = usuario;
+        super(usuario);
+    }
+    
+    public EliminarUsuarioOperacion(){
     }
     
     @Override
@@ -34,4 +35,8 @@ public class EliminarUsuarioOperacion implements Operacion{
         return null;
     }
     
+    @Override
+    public void setUsuario(String usuario) {
+        super.setUsuario(usuario);
+    }
 }

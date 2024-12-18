@@ -18,8 +18,8 @@ import Turnera_medica.UI.Mediadores.AdministradorFrames;
  * @author KevinDL
  */
 
-/*
-public class IngresoCredencialesOperacion implements Operacion{
+@Deprecated
+public class IngresoCredencialesOperacion extends Operacion{
     // Operacion para el ingreso al sistema como un usuario
     private String usuario;
     private String clave;

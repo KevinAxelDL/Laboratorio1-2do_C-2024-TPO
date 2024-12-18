@@ -20,7 +20,6 @@ public abstract class PanelTablaUI<T> extends JPanel{
     protected List<T> datos;
     
     public PanelTablaUI(){
-        obtenerDatos();
         this.setLayout(new BorderLayout());// Permite que los contenidos se expandan hasta el borde del panel
     }
     

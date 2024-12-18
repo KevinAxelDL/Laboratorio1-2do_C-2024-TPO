@@ -9,6 +9,7 @@ import Turnera_medica.Excepciones.ServicioException;
 import Turnera_medica.Modelo.Administrador;
 import Turnera_medica.Modelo.Turno;
 import Turnera_medica.Modelo.Usuario;
+import Turnera_medica.UI.DatosReportes.GananciasReporte;
 import java.util.List;
 
 /**
@@ -30,7 +31,13 @@ public interface AdministradorDAO{
     
     public List<Turno> listarTurnos() throws DAOException;
     
+    public List<Turno> listarTurnos(String nombreUsuario, Class<?> tipoUsuario) throws DAOException;
+    
     public Usuario obtenerUsuario(String nombreUsuario, Class<?> tipoUsuario) throws DAOException;
+    
+    public List<GananciasReporte> listarGanancias(String fechaDesde, String fechaHasta, String usuarioMedico) throws DAOException;
+    
+    public List<GananciasReporte> listarGanancias(String fechaDesde, String fechaHasta) throws DAOException;
     
     // Modificar registro
     public void asignarFuncionAdministrador(Usuario usuario) throws DAOException;

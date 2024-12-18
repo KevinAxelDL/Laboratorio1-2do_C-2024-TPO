@@ -8,6 +8,8 @@ package Turnera_medica.UI.Frames;
 import Turnera_medica.Modelo.Administrador;
 import Turnera_medica.UI.Botones.BotonUI;
 import Turnera_medica.UI.Mediadores.AdministradorFrames;
+import Turnera_medica.UI.Operaciones.EliminarUsuarioOperacion;
+import Turnera_medica.UI.Operaciones.Operacion;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,8 +33,8 @@ public class MenuAdministradorUI extends MenuUI implements ActionListener{
         this.botonCrearUsuario = new BotonUI("Cargar usuario");
         this.botonEliminarUsuario = new BotonUI("Eliminar usuario");
         this.botonVerReportes = new BotonUI("Reportes");
-        this.botonModificarUsuario = new BotonUI("Modificar usuario");
         this.botonCrearTurno = new BotonUI("Cargar turno");
+        this.botonModificarUsuario = new BotonUI("Modificar usuario");
         
         // Se define el comportamiento del frame 
         
@@ -50,9 +52,9 @@ public class MenuAdministradorUI extends MenuUI implements ActionListener{
         super.armar();
         this.add(botonCrearUsuario);
         this.add(botonEliminarUsuario);
-        this.add(botonModificarUsuario);
         this.add(this.botonCrearTurno);
         this.add(botonVerReportes);
+        //this.add(botonModificarUsuario);
 
         // Hace visible el frame
         super.centrar();
@@ -73,13 +75,10 @@ public class MenuAdministradorUI extends MenuUI implements ActionListener{
         }
         
         if(e.getSource() == this.botonEliminarUsuario){
-            AdministradorFrames.mostrarIngresoNombreUsuario("Eliminar usuario");
+            EliminarUsuarioOperacion operacion = new EliminarUsuarioOperacion();
+            AdministradorFrames.mostrarIngresoNombreUsuario("Eliminar usuario", operacion);
         }
-        
-        if(e.getSource() == this.botonModificarUsuario){
-            crearFormularioModificarUsuario();
-        }
-        
+
         if(e.getSource() == this.botonVerReportes){
             AdministradorFrames.mostrarMenuReportesAdministrador();
         }
@@ -87,9 +86,10 @@ public class MenuAdministradorUI extends MenuUI implements ActionListener{
         if(e.getSource() == this.botonCrearTurno){
             AdministradorFrames.mostrarFormularioNuevoTurno();
         }
-        
-        if(e.getSource() == this.botonCerrarSesion){
-            this.cerrarSesion();
+        /*
+        if(e.getSource() == this.botonModificarUsuario){
+            crearFormularioModificarUsuario();
         }
+        */
     }
 }

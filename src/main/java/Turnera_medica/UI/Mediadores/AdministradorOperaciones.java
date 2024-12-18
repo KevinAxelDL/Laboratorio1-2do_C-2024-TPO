@@ -9,11 +9,8 @@ import Turnera_medica.Excepciones.ServicioException;
 import Turnera_medica.Modelo.Usuario;
 import Turnera_medica.Servicios.AdministradorServicios;
 import Turnera_medica.Servicios.UsuarioServicios;
-import Turnera_medica.UI.Paneles.PanelTablaUI;
-import Turnera_medica.UI.Paneles.PanelTablaUsuariosUI;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *

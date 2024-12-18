@@ -15,8 +15,8 @@ import java.util.List;
  * @author KevinDL
  */
 
-/*
-public class CrearNuevoUsuarioOperacion implements Operacion{
+@Deprecated
+public class CrearNuevoUsuarioOperacion extends Operacion{
     private String usuario;
     private String clave; 
     private String nombre; 

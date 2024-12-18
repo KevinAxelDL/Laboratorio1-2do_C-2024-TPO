@@ -7,7 +7,8 @@ package Turnera_medica.UI.Frames;
 import Turnera_medica.Excepciones.OperacionException;
 import Turnera_medica.UI.Botones.BotonUI;
 import Turnera_medica.UI.Mediadores.AdministradorFrames;
-import Turnera_medica.UI.Mediadores.AdministradorOperaciones;
+import Turnera_medica.UI.Operaciones.Operacion;
+import Turnera_medica.UI.Operaciones.OperacionSobreUsuario;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,9 +23,11 @@ public class IngresoNombreUsuarioUI extends UserInterface implements ActionListe
     private JLabel usuarioLabel; 
     private JTextField usuarioField; 
     private BotonUI boton;
+    private OperacionSobreUsuario operacion;
     
-    public IngresoNombreUsuarioUI(String titulo){
+    public IngresoNombreUsuarioUI(String titulo, OperacionSobreUsuario operacion){
         super(titulo);
+        this.operacion = operacion;
         this.usuarioLabel = new JLabel("Usuario:");
         this.usuarioField = new JTextField();
         this.boton = new BotonUI("OK");
@@ -38,6 +41,7 @@ public class IngresoNombreUsuarioUI extends UserInterface implements ActionListe
         this.setLayout(new GridLayout(2, 2)); 
         
         // Accion
+        this.boton.setOperacion(this.operacion);
         this.boton.addActionListener(this); 
 
         
@@ -53,25 +57,23 @@ public class IngresoNombreUsuarioUI extends UserInterface implements ActionListe
 
     @Override
     public void actionPerformed(ActionEvent e){
-        int resultado;
         if(e.getSource() == this.boton){
+            // Se preciono el boton
+            /*
             try {
-                // Se preciono el boton
                 resultado = AdministradorOperaciones.eliminarUsuario(this.usuarioField.getText());
                 AdministradorFrames.mostrarMensaje("Operacion exitosa, registros afectados: "+ resultado);
             } catch (OperacionException ex) {
                 AdministradorFrames.mostrarMensaje(ex.getMessage());
             }
-            
-            /*
-            EliminarUsuarioOperacion operacion = new EliminarUsuarioOperacion(usuarioField.getText());
+            */
+            this.operacion.setUsuario(this.usuarioField.getText());
             this.boton.setOperacion(operacion);
             try {
                 this.boton.activar();
             } catch (OperacionException ex) {
                 AdministradorFrames.mostrarMensaje(ex.getMessage());
             }
-            */
         }
     }
 }

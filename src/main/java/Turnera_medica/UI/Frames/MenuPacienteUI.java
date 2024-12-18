@@ -5,23 +5,23 @@
 package Turnera_medica.UI.Frames;
 
 import Turnera_medica.Modelo.Medico;
+import Turnera_medica.Modelo.Paciente;
 import Turnera_medica.UI.Botones.BotonUI;
 import Turnera_medica.UI.Mediadores.AdministradorFrames;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 /**
  *
  * @author KevinDL
  */
-public class MenuMedicoUI extends MenuUI{
+public class MenuPacienteUI extends MenuUI{
     private BotonUI botonMostrarReportes;
-    private Medico medico;
+    private Paciente paciente;
     
-    public MenuMedicoUI(Medico medico){
-        super("Menu medico", medico, 3);
+    public MenuPacienteUI(Paciente paciente){
+        super("Menu paciente", paciente, 3);
         super.configurarPorDefault();
-        this.medico = medico;
+        this.paciente = paciente;
         this.botonMostrarReportes = new BotonUI("Reportes");
     }
     
@@ -39,7 +39,7 @@ public class MenuMedicoUI extends MenuUI{
         super.actionPerformed(e);
         
         if(e.getSource() == this.botonMostrarReportes){
-            AdministradorFrames.mostrarMenuReportesMedico(this.medico);
+            AdministradorFrames.mostrarMenuReportesPaciente(this.paciente);
         }
     }
 }

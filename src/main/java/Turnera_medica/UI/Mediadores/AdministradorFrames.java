@@ -15,8 +15,13 @@ import Turnera_medica.UI.Frames.IngresoNombreUsuarioUI;
 import Turnera_medica.UI.Frames.MensajeUI;
 import Turnera_medica.UI.Frames.MenuAdministradorUI;
 import Turnera_medica.UI.Frames.MenuMedicoUI;
+import Turnera_medica.UI.Frames.MenuPacienteUI;
 import Turnera_medica.UI.Frames.ReportesAdministradorUI;
+import Turnera_medica.UI.Frames.ReportesMedicoUI;
+import Turnera_medica.UI.Frames.ReportesPacienteUI;
 import Turnera_medica.UI.Frames.UserInterface;
+import Turnera_medica.UI.Operaciones.Operacion;
+import Turnera_medica.UI.Operaciones.OperacionSobreUsuario;
 
 /**
  *
@@ -43,7 +48,8 @@ public abstract class AdministradorFrames {
         }
         
         if(usuario instanceof Paciente){
-            //IMPLEMENTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+            MenuPacienteUI menu = new MenuPacienteUI((Paciente) usuario);
+            menu.armar();
         }
         
     }
@@ -68,8 +74,8 @@ public abstract class AdministradorFrames {
         ui.armar();
     }
     
-    public static void mostrarIngresoNombreUsuario(String texto){
-        IngresoNombreUsuarioUI ui = new IngresoNombreUsuarioUI(texto);
+    public static void mostrarIngresoNombreUsuario(String texto, OperacionSobreUsuario operacion){
+        IngresoNombreUsuarioUI ui = new IngresoNombreUsuarioUI(texto, operacion);
         if(ultimoFrame3 != null){
             ultimoFrame3.cerrar();
         }
@@ -93,6 +99,24 @@ public abstract class AdministradorFrames {
     
     public static void mostrarMenuReportesAdministrador(){
         ReportesAdministradorUI ui = new ReportesAdministradorUI();
+        if(ultimoFrame4 != null){
+            ultimoFrame4.cerrar();
+        }
+        ultimoFrame4 = ui;
+        ui.armar();
+    }
+    
+    public static void mostrarMenuReportesMedico(Medico medico){
+        ReportesMedicoUI ui = new ReportesMedicoUI(medico);
+        if(ultimoFrame4 != null){
+            ultimoFrame4.cerrar();
+        }
+        ultimoFrame4 = ui;
+        ui.armar();
+    }
+    
+    public static void mostrarMenuReportesPaciente(Paciente paciente){
+        ReportesPacienteUI ui = new ReportesPacienteUI(paciente);
         if(ultimoFrame4 != null){
             ultimoFrame4.cerrar();
         }

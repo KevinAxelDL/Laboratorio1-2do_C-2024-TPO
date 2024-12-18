@@ -40,15 +40,15 @@ public class PanelIngresoFechaUI extends JPanel{
         this.add(this.anioSpinner);
     }
 
-    public Object getDia() {
+    private Object getDia() {
         return diaSpinner.getValue();
     }
 
-    public Object getMes() {
+    private Object getMes() {
         return mesSpinner.getValue();
     }
 
-    public Object getAnio() {
+    private Object getAnio() {
         return anioSpinner.getValue();
     }
     

@@ -18,7 +18,9 @@ import javax.swing.JTable;
  * @author KevinDL
  */
 public class PanelTablaTurnosUI extends PanelTablaUI{
-
+    private String nombreUsuario;
+    private Class<?> tipoUsuario;
+            
     public PanelTablaTurnosUI(){
         // Crea JTable y TableModel
         super();
@@ -27,12 +29,27 @@ public class PanelTablaTurnosUI extends PanelTablaUI{
         this.add(this.tabla);
         this.add(new JScrollPane(tabla));
     }
-
+    
+    public PanelTablaTurnosUI(String nombreUsuario, Class<?> tipoUsuario){
+        // Crea JTable y TableModel
+        super();
+        this.modelo = new TurnoTableModel(this.datos);
+        this.tabla = new JTable(modelo);
+        this.nombreUsuario = nombreUsuario;
+        this.tipoUsuario = tipoUsuario;
+        this.add(this.tabla);
+        this.add(new JScrollPane(tabla));
+    }
     
     @Override
     protected void obtenerDatos() {
         try {
-            this.datos = AdministradorServicios.listarTurnos();
+            if(this.nombreUsuario == null && this.tipoUsuario == null){
+                this.datos = AdministradorServicios.listarTurnos();
+            }else{
+                this.datos = AdministradorServicios.listarTurnos(this.nombreUsuario, this.tipoUsuario);
+            }
+            
         } catch (ServicioException ex) {
             AdministradorFrames.mostrarMensaje(ex.getMessage());
         }

@@ -13,6 +13,7 @@ import Turnera_medica.UI.Mediadores.AdministradorOperaciones;
 import Turnera_medica.UI.Paneles.PanelIngresoFechaUI;
 import Turnera_medica.UI.Paneles.PanelIngresoHoraUI;
 import Turnera_medica.UI.Paneles.PanelIngresoStringUI;
+import Turnera_medica.UI.Paneles.PanelTablaGananciasUI;
 import Turnera_medica.UI.Paneles.PanelTablaTurnosUI;
 import Turnera_medica.UI.Paneles.PanelTablaUI;
 import java.awt.GridLayout;
@@ -26,63 +27,60 @@ import javax.swing.JTable;
  *
  * @author KevinDL
  */
-public class ReportesAdministradorUI extends UserInterface implements ActionListener{
-    private JPanel panelOpciones;
+public class ReportesAdministradorUI extends ReportesUI{
+    
     private BotonUI botonReporteUsuarios;
     private BotonUI botonReporteTurnos;
     private BotonUI botonReporteGanancias;
+    
     private PanelTablaUsuariosUI panelTablaReporteUsuarios;
     private PanelTablaTurnosUI panelTablaReporteTurnos;
-    private JLabel tituloReporteUsuarios;
-    private JLabel tituloReporteGanancias;
-    private PanelIngresoHoraUI panelIngresoHora;
-    private PanelIngresoFechaUI panelIngresoFecha;
-    private PanelTablaUI ultimoPanelTabla;
+    private PanelTablaGananciasUI panelTablaReporteGanancias;
+    
+    private JPanel panelFechas;
+    private PanelIngresoFechaUI panelIngresoFechaInicial;
+    private PanelIngresoFechaUI panelIngresoFechaFinal;
+    private PanelIngresoStringUI panelIngresoString;
     
     
     public ReportesAdministradorUI(){
-        super("Reportes");
-        this.setLayout(new GridLayout(1, 2));
-        this.setSize(1500,900);
+        super();
         
         this.panelTablaReporteUsuarios = new PanelTablaUsuariosUI();
         this.panelTablaReporteTurnos = new PanelTablaTurnosUI();
+        this.panelTablaReporteGanancias = new PanelTablaGananciasUI();
            
         this.botonReporteUsuarios = new BotonUI("Actualizar (1)");
         this.botonReporteUsuarios.addActionListener(this);
         
-        this.panelIngresoFecha = new PanelIngresoFechaUI();
+        //Panel ganancias; fechas y medico
+        this.panelFechas = new JPanel();//Principal
+        this.panelFechas.setLayout(new GridLayout(3,2));
+        
+        this.panelIngresoFechaInicial = new PanelIngresoFechaUI();
+        this.panelIngresoFechaFinal = new PanelIngresoFechaUI();
+        this.panelIngresoString = new PanelIngresoStringUI();
+        
+        
         this.botonReporteGanancias = new BotonUI("Actualizar (2)");
         this.botonReporteGanancias.addActionListener(this);
-        
+        //
         this.botonReporteTurnos = new BotonUI("Actualizar (3)");
         this.botonReporteTurnos.addActionListener(this);
         
-        this.panelOpciones = new JPanel(); 
         this.panelOpciones.setLayout(new GridLayout(8,1));
     }
     
     @Override
     public void armar() {
         //Panel ganancias; fechas y medico
-        JPanel panelFechas = new JPanel();
         
-        panelFechas.setLayout(new GridLayout(3,2));
-        JLabel tituloInicio = new JLabel("Desde: ");
-        JLabel tituloFinal = new JLabel("Hasta: ");
-        
-        PanelIngresoFechaUI fechaInicio = new PanelIngresoFechaUI();
-        PanelIngresoFechaUI fechaFin = new PanelIngresoFechaUI();
-        
-        PanelIngresoStringUI panelString = new PanelIngresoStringUI();
-        JLabel tituloUsuaruio = new JLabel("Ingrese un usuario: ");
-        
-        panelFechas.add(tituloInicio);
-        panelFechas.add(fechaInicio);
-        panelFechas.add(tituloFinal);
-        panelFechas.add(fechaFin);
-        panelFechas.add(tituloUsuaruio);
-        panelFechas.add(panelString);
+        panelFechas.add(new JLabel("Desde: "));
+        panelFechas.add(this.panelIngresoFechaInicial);
+        panelFechas.add(new JLabel("Hasta: "));
+        panelFechas.add(this.panelIngresoFechaFinal);
+        panelFechas.add(new JLabel("Ingrese un usuario: "));
+        panelFechas.add(this.panelIngresoString);
         
         //Panel opciones
         this.panelOpciones.add(new JLabel("Listar usuarios"));
@@ -115,6 +113,21 @@ public class ReportesAdministradorUI extends UserInterface implements ActionList
             }
         }
         
+        if(e.getSource() == this.botonReporteGanancias){
+            //Se asignan los valores ingresados en la UI
+            this.panelTablaReporteGanancias.setFechaDesde(this.panelIngresoFechaInicial.toString());
+            this.panelTablaReporteGanancias.setFechaHasta(this.panelIngresoFechaFinal.toString());
+            this.panelTablaReporteGanancias.setUsuarioMedico(this.panelIngresoString.getTexto());
+            
+            this.asignarUltimoPanel(this.panelTablaReporteGanancias);
+                
+            try {
+                this.mostrarPanelTabla(this.panelTablaReporteGanancias);
+            } catch (OperacionException ex) {
+                AdministradorFrames.mostrarMensaje(ex.getMessage());
+            }
+        }
+        
         if(e.getSource() == this.botonReporteTurnos){
             this.asignarUltimoPanel(this.panelTablaReporteTurnos);
                 
@@ -124,25 +137,5 @@ public class ReportesAdministradorUI extends UserInterface implements ActionList
                 AdministradorFrames.mostrarMensaje(ex.getMessage());
             }
         }
-    }
-    
-    private void asignarUltimoPanel(PanelTablaUI panel){
-        if(this.ultimoPanelTabla != null){
-            this.remove(this.ultimoPanelTabla); 
-        }
-        this.ultimoPanelTabla = panel;
-        this.revalidate();
-        this.repaint();
-    }
-    
-    private void mostrarPanelTabla(PanelTablaUI panel) throws OperacionException {
-        //Obtencion de datos
-        this.add(panel,0);
-        panel.actualizar();
-        this.revalidate();
-        this.repaint();
-    }
-    
-    
-    
+    } 
 }

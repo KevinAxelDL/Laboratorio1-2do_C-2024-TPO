@@ -1,4 +1,3 @@
-+   (CLASES OBSOLETAS)
 +   El fin de las clases "Operacion" es poder desacoplar las operaciones de la UI (botones princiapalmente), para la reutilizacion de elementos de la UI. 
 Por ejemplo, los botones se desacoplan de las acciones que hacen, de esta forma, es posible usar una misma clase de boton con varios fines.
 +   Inspirado por el patron de comportamiento "Command" (https://refactoring.guru/design-patterns/command)
