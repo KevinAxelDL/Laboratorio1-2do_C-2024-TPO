@@ -646,7 +646,7 @@ public class AdministradorDAOH2 implements AdministradorDAO {
         }
         
         if(!encontrado){
-            throw new DAOException("NO EXISTE UN USUARIO CON ESA FUNCION!");
+            throw new DAOException("NO EXISTE EL USUARIO O NO POSEE ESA FUNCION!");
         }
         
         return nuevoUsuario;

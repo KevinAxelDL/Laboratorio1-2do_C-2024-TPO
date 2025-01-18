@@ -11,15 +11,5 @@ import Turnera_medica.Modelo.Medico;
  * @author KevinDL
  */
 public interface MedicoDAO extends UsuarioDAO {
-    
-    // Creacion
-    public void crear(String nombre, String apellido, int dni, String nomUsuario, String passUsuario, double valorTurno);
-    public void crear(String nombreUsuario, String passUsuario, double valorTurno);
-    public void crear(String nombreUsuario, String passUsuario);
-    
-    // Actualizacion
-    public void actualizar(Medico medico, double valorTurno);
-    
-    // Eliminacion
-    public void eliminar(Medico medico);
+
 }

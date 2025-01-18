@@ -36,8 +36,8 @@ public class AdministradorServicios extends UsuarioServicios{
     public static void registrarTurno(String medico, String paciente, String fechaYHora, String consultorio) throws ServicioException{
         // Antes de registrar un turno se debe verificar si se ingresaron los usuarios correctos
         AdministradorDAOH2 adminDAOH2 = new AdministradorDAOH2();
-        Medico nuevoMedico = null;
-        Paciente nuevoPaciente = null;
+        //Medico nuevoMedico = null;
+        //Paciente nuevoPaciente = null;
         try {
             Medico medicoRes = (Medico) adminDAOH2.obtenerUsuario(medico, Medico.class); // Retorna 1 usuario
             Paciente pacienteRes = (Paciente) adminDAOH2.obtenerUsuario(paciente, Paciente.class); // Retorna 1 usuario
